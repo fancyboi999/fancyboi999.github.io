@@ -19,6 +19,10 @@ highlighter:         rouge
 permalink:           /:title
 plugins:             [jekyll-paginate, jekyll-sitemap, jekyll-feed, jekyll-seo-tag]
 
+# Site URL configuration
+url: "https://fancyboi999.github.io"
+baseurl: ""
+
 # Customise atom feed settings (this is where Jekyll-Feed gets configuration information)
 title:		           'Fancyboi'
 plaindescription:    'a website about nerd things'
