@@ -20,11 +20,11 @@ permalink:           /:title
 plugins:             [jekyll-paginate, jekyll-sitemap, jekyll-feed, jekyll-seo-tag]
 
 # Customise atom feed settings (this is where Jekyll-Feed gets configuration information)
-title:		           'Just Josh'
-plaindescription:    'a wobsite about nerd things'
+title:		           'Fancyboi'
+plaindescription:    'a website about nerd things'
 # description:	       'a <a href="https://xkcd.com/148/">wobsite</a> about nerd things'
-description:         'a wobsite about nerd things'
-author:              'Josh Achiam'
+description:         'a website about nerd things'
+author:              'Fancyboi'
 
 # RSS 2.0 can be used instead of Atom by uncommenting following two lines
 #feed:
