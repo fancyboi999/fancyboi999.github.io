@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Assistant
-permalink: /assistant/
+permalink: /assistant
 ---
 
 <iframe
