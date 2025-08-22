@@ -102,7 +102,7 @@ Manus 是一个自主 AI 智能体，作为基础模型（主要是 Claude 3.5/3
 
 **Sources:**
 
-1. Ji Yichao (Peak) on Manus’s foundation models – using Anthropic Claude and finetuned Alibaba Qwen ([Manus背后的基础大模型首次公布！基于美国Claude和阿里Qwen开发|美国|阿里|AI_新浪科技_新浪网][1]) ([Manus背后的基础大模型首次公布！基于美国Claude和阿里Qwen开发|美国|阿里|AI_新浪科技_新浪网][2]).  
+1. Ji Yichao (Peak) on Manus’s foundation models – using Anthropic Claude and finetuned Alibaba Qwen ([Manus背后的基础大模型首次公布！基于美国Claude和阿里Qwen开发美国阿里AI_新浪科技_新浪网][1]) ([Manus背后的基础大模型首次公布！基于美国Claude和阿里Qwen开发美国阿里AI_新浪科技_新浪网][2]).  
 2. Tech media report on Manus’s multi-model and multi-agent strategy (GPT-4, Claude, Gemini for different tasks; sub-agents in separate VMs) ([Manus在紅什麼？外媒評測訂餐、訂位、訂票⋯都碰壁：它是中國第二個DeepSeek時刻？][45]) ([Manus在紅什麼？外媒評測訂餐、訂位、訂票⋯都碰壁：它是中國第二個DeepSeek時刻？][17]).  
 3. Manus system prompt (leaked) – capabilities and tool use rules ([Manus tools and prompts · GitHub][4]) ([Manus tools and prompts · GitHub][23]).  
 4. Manus agent loop and planning (system prompt excerpt) ([Manus tools and prompts · GitHub][8]) ([Manus tools and prompts · GitHub][12]).  
