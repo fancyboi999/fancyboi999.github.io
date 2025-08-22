@@ -175,3 +175,9 @@ description: A sci-fi microstory about deep research.
     *   **GitHub**: [u14app/deep-research](https://github.com/u14app/deep-research)
     *   **基座**: Gemini, OpenAI, Deepseek, Anthropic, Grok
     *   **推理方式**: Prompt
+
+
+Resources:
+
+[https://github.com/scienceaix/deepresearch](https://github.com/scienceaix/deepresearch)
+[A Comprehensive Survey of Deep Research: Systems, Methodologies, and Applications](https://arxiv.org/pdf/2506.12594)
