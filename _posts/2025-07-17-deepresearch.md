@@ -1,12 +1,11 @@
 ---
 layout: post
 title: "Deep Research现有方案技术总结：实现架构、特点对比、现存问题及未来方向"
-author: "fancy"
-categories: research
-tags: [research, deep-research]
-image: deepresearch.png
-imagecredit: Image from website <a href="https://github.com/SkyworkAI/DeepResearchAgent/blob/main/docs/architecture.png">SkyworkAI Deep Research Agent</a>.
-description: A sci-fi microstory about deep research.
+author: fancyboi
+categories: [研究]
+tags: [deep-research, AI, 技术总结]
+image: /assets/img/deepresearch.png
+description: Deep Research 现有方案技术总结，涵盖实现架构、特点对比及未来方向。
 ---
 
 当前已有许多系统，实际上，在之前的文章《[Deep Research现有方案技术总结：实现架构、特点对比、现存问题及未来方向](https://mp.weixin.qq.com/s/7TqX0zi8aI-jByetRIISJg)》中，介绍了《[A Comprehensive Survey of Deep Research: Systems, Methodologies, and Applications](https://arxiv.org/pdf/2506.12594)》，分析了自2023年以来涌现的80多个商业和非商业实现，包括OpenAI/DeepResearch、Gemini/DeepResearch、Perplexity/DeepResearch 以及众多开源替代方案，如 [dzhng/deepresearch](https://github.com/dzhng/deepresearch)、[HKUDS/Auto-Deep-Research](https://github.com/scienceaix/deepresearch)等开源实现。
