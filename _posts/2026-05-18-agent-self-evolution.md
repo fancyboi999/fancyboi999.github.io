@@ -2,7 +2,7 @@
 layout: post
 title: "Agent 自进化进展盘点：参数没动，凭什么叫'进化'"
 author: fancyboi
-date: 2026-05-19 00:00:00 +0800
+date: 2026-05-18 12:00:00 +0800
 categories: [研究]
 tags: [agent, self-evolution, memory, skill-library, reflexion, voyager, claude-code, hermes, gepa, dspy]
 description: 从 Reflexion 2023 到 Claude Dream 2026 的完整盘点。区分真正的 self-evolution（model）和被包装成自进化的 context engineering（memory + prompt + skill）。当下大部分产品停在第三层，少数研究在第二层，第一层是闭源大厂的护城河。
