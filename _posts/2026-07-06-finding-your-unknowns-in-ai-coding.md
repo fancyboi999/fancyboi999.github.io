@@ -2,7 +2,7 @@
 layout: post
 title: "AI 编程里的未知，比 prompt 重要"
 author: fancyboi
-date: 2026-07-06 14:30:00 +0800
+date: 2026-07-06 12:40:00 +0800
 categories: [研究]
 tags: [agent, claude-code, codex, workflow, verification, context-engineering]
 description: 看到《Finding Your Unknowns》之后，我回头翻了这几个月用 Codex 和 Claude Code 的真实记录。最后发现，AI 编程最难的部分常常不在代码本身，而在那些我们自己没说清、甚至没意识到的未知。
