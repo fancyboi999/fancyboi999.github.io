@@ -1,0 +1,95 @@
+/* vendored from multimedia-skills: web-design/web-style-extraction/assets/effects/word-swap/word-swap.css */
+/* word-swap.css — 逐词"像素点 → 弹出"标题，两句标题叠放并互换
+ *
+ * 结构（由 word-swap.js 生成，也可手写）：
+ *   <h1 class="ws" aria-label="最终语义">
+ *     <span class="ws-line ws-before" aria-hidden="true">
+ *       <span class="ws-word" data-side="left" style="--i:0"><span class="ws-mark"></span><span class="ws-text">Designer</span></span> …
+ *     </span>
+ *     <span class="ws-line ws-after" aria-hidden="true">… <span class="ws-slot"></span> …</span>
+ *   </h1>
+ * 状态：
+ *   默认播放 before；给 .ws 加 .is-swapped → before 淡出上移、after 逐词弹出。
+ *   --out (0..1) 可由滚动驱动，让 before 逐词消失（越靠后的词越晚走）。
+ *
+ * 每个词三段动画，共用一个时长 --word：
+ *   ws-mark  ：词旁边先出现一个小方点，放大到 2 倍后缩没（step-end → 硬切，像素感）
+ *   ws-text  ：文字从 0.35 倍跳到 0.65 再到 1（同样 step-end，三档跳变而不是平滑缩放）
+ *   ws-drift ：文字落定后朝来侧横向回位 0.08em（这一段用平滑缓动收尾）
+ */
+
+.ws {
+  --word: 500ms;     /* 单词总时长 */
+  --stagger: 80ms;   /* 词间错开 */
+  --delay: 0ms;      /* 整句起始延迟 */
+  --out: 0;          /* before 句消失进度，0..1 */
+  display: grid;
+  margin: 0;
+}
+.ws-line { grid-area: 1 / 1; align-self: center; }
+.ws-word { display: inline-block; position: relative; --at: calc(var(--delay) + var(--i) * var(--stagger)); }
+.ws-text { display: inline-block; }
+.ws-mark {
+  position: absolute;
+  bottom: 0.08em;
+  width: 0.14em;
+  height: 0.14em;
+  background: var(--ws-mark-fill, currentColor);
+  image-rendering: pixelated;
+  opacity: 0;
+}
+.ws-word[data-side="left"]  { --dir: -1; }
+.ws-word[data-side="right"] { --dir: 1; }
+.ws-word[data-side="left"]  .ws-text { transform-origin: left bottom; }
+.ws-word[data-side="right"] .ws-text { transform-origin: right bottom; }
+.ws-word[data-side="left"]  .ws-mark { right: calc(100% + 0.04em); transform-origin: right bottom; }
+.ws-word[data-side="right"] .ws-mark { left: calc(100% + 0.06em); transform-origin: left bottom; }
+
+/* 播放规则：before 默认播放；after 只在 .is-swapped 时播放 */
+.ws-before .ws-text,
+.ws.is-swapped .ws-after .ws-text {
+  animation:
+    ws-text var(--word) step-end var(--at) both,
+    ws-drift calc(var(--word) * 0.5) cubic-bezier(0.22, 1, 0.36, 1) calc(var(--at) + var(--word) * 0.55) both;
+}
+.ws-before .ws-mark,
+.ws.is-swapped .ws-after .ws-mark {
+  animation: ws-mark var(--word) step-end var(--at) both;
+}
+
+/* before 随 --out 逐词离场：第 i 个词晚 0.16 开始 */
+.ws-before .ws-word {
+  --gone: clamp(0, calc(var(--out) * 1.8 - var(--i) * 0.16), 1);
+  opacity: calc(1 - var(--gone));
+  translate: 0 calc(var(--gone) * -0.25em);
+}
+.ws.is-swapped .ws-before .ws-word { opacity: 0; }
+.ws-after .ws-word { opacity: 0; }
+.ws.is-swapped .ws-after .ws-word { opacity: 1; }
+/* slot：after 句里留给图标的方块位，随该位置的序号一起弹出 */
+.ws-slot { display: inline-block; width: 1cap; height: 1cap; vertical-align: baseline; opacity: 0; --at: calc(var(--delay) + var(--i) * var(--stagger)); }
+.ws.is-swapped .ws-slot { opacity: 1; animation: ws-text var(--word) step-end var(--at) both; }
+
+@keyframes ws-mark {
+  0%   { opacity: 0; scale: 1; }
+  1%   { opacity: 1; scale: 1; }
+  15%  { scale: 1.5; }
+  30%  { scale: 2; }
+  55%  { opacity: 0; scale: 0; }
+  100% { opacity: 0; }
+}
+@keyframes ws-text {
+  0%       { opacity: 0; scale: 0.35; }
+  30%      { opacity: 1; scale: 0.35; }
+  45%      { scale: 0.65; }
+  55%, 100% { opacity: 1; scale: 1; }
+}
+@keyframes ws-drift {
+  0%   { translate: calc(var(--dir) * 0.08em) 0; }
+  100% { translate: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ws-text, .ws-mark { animation: none !important; }
+  .ws-before .ws-word { translate: none; }
+}
