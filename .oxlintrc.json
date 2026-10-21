@@ -1,0 +1,4 @@
+{
+  "plugins": ["react", "import", "unicorn"],
+  "globals": { "__BUILD_YEAR__": "readonly" }
+}
