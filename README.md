@@ -6,6 +6,10 @@
 
 在 `content/posts/` 新建 `YYYY-MM-DD-<slug>.md`，front matter 支持 `title`、`date`、`description`、`categories`、`tags`。文章 URL 是 `/posts/<slug>/`。静态文件放 `public/`。
 
+## 加工具（/stack/）
+
+在 `content/stack.json` 的 `items` 里加一项（`id`、`name`、`url`、`category`、`note`），再把官网首屏截图存成 `public/stack/<id>.webp`（800×516）。`categories` 决定分组和筛选。
+
 ## 命令
 
 ```bash
@@ -23,3 +27,4 @@ npm run preview   # 预览 dist/
 - `scripts/prerender.mjs`：渲染全部路由，生成 `404.html`、`feed.xml`、`sitemap.xml`、`robots.txt`
 - `src/fx/`：像素天空、滚动舞台、换词标题等特效（从 skill 的 assets 拷入）
 - `src/site.js`：站点名称、简介、首页标题文案
+- `src/stack.js` + `content/stack.json`：工具箱数据；`src/routes/Stack.jsx` 是画布和分类两种视图

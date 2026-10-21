@@ -412,3 +412,77 @@ a.chip-on-blue:hover b { color: var(--ink); }
 @media (prefers-reduced-motion: reduce) {
   .hero-bio, .hero-hint::after { animation: none; }
 }
+
+/* ---------- 工具箱 /stack/ ---------- */
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* 画布：铺满卡片的一整屏，自己处理拖拽和滚轮 */
+.stack.is-wall { height: 100%; }
+.stage:has(> .page-root .stack.is-wall) { overflow: hidden; }
+.wall {
+  position: relative; height: 100vh; height: 100dvh; overflow: hidden;
+  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; outline: none;
+}
+.wall.is-dragging { cursor: grabbing; }
+.wall.is-dragging .wall-tile { pointer-events: none; }
+.wall:focus-visible { box-shadow: inset 0 0 0 2px var(--ink); }
+.wall-world { position: absolute; inset: 0 auto auto 0; will-change: transform; }
+.wall-tile {
+  position: absolute; top: 0; left: 0; width: 320px;
+  display: grid; gap: 12px; color: var(--ink); text-decoration: none;
+  -webkit-user-drag: none;
+}
+.wall-tile .wall-media {
+  display: block; aspect-ratio: 800 / 516; border-radius: var(--radius-card); background: var(--surface);
+  /* 截图多是白底，靠描边和浅投影把卡片从纸白背景里托出来 */
+  box-shadow: 0 0 0 1px var(--line-soft), 0 12px 32px rgba(46, 51, 66, 0.08);
+}
+.wall-media img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.wall-caption { display: grid; gap: 2px; padding: 0 6px; }
+.wall-name { font-weight: 500; font-size: 16px; }
+.wall-note { color: var(--muted); font-size: 13px; }
+/* 入场：只在首屏播放，之后平移出来的新卡片直接出现 */
+.wall.is-entering .wall-tile > * { animation: tile-in 900ms var(--ease-out-expo) calc(var(--d) * 45ms) both; }
+@keyframes tile-in { from { opacity: 0; transform: translateY(40px) scale(0.92); } }
+
+/* 视图切换：底部居中的胶囊，像素标记夹在两个选项之间 */
+.view-switch {
+  position: fixed; left: 50%; bottom: 24px; z-index: 60; translate: -50% 0;
+  display: flex; align-items: center; gap: 6px; height: 50px; padding: 0 6px; border-radius: 999px;
+}
+.view-switch button {
+  height: 38px; padding: 0 18px; border: 0; border-radius: 999px; background: none;
+  color: var(--muted); font: 500 15px/1 var(--sans); cursor: pointer;
+  transition: color 100ms ease-out, background-color 100ms ease-out;
+}
+.view-switch button:hover { color: var(--ink); }
+.view-switch button[aria-pressed="true"] { color: var(--ink); background: var(--line-soft); }
+.view-switch-mark { width: 30px; height: 30px; }
+
+/* 分类：designeer 式的筛选 + 网格 */
+.shelf { padding-bottom: 80px; }
+.shelf-lead { max-width: 36em; color: var(--muted); font-size: 18px; line-height: 1.5; }
+.shelf-filter button { border: 0; font-family: inherit; cursor: pointer; }
+.shelf-filter button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.shelf-filter button[aria-pressed="true"] b { color: #fff; opacity: 0.7; }
+.shelf-group { margin-bottom: 72px; }
+.shelf-h { display: flex; align-items: baseline; gap: 12px; margin-bottom: 24px; font: 500 var(--type-statement)/1 var(--sans); letter-spacing: -0.02em; }
+.shelf-h span { color: var(--subtle); font: 400 13px/1 var(--mono); letter-spacing: 0.04em; }
+.shelf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px 20px; }
+.shelf-card { display: grid; gap: 12px; color: var(--ink); text-decoration: none; }
+.shelf-card .shelf-media { display: block; aspect-ratio: 800 / 516; border-radius: var(--radius); background: var(--surface); box-shadow: 0 0 0 1px var(--line-soft); }
+.shelf-media img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.shelf-caption { display: grid; gap: 3px; padding: 0 4px; }
+.shelf-name { display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 17px; }
+.shelf-name svg { color: var(--subtle); }
+.shelf-note { color: var(--muted); font-size: 14px; }
+.shelf-domain { color: var(--subtle); font: 400 12px/1.4 var(--mono); }
+
+@media (max-width: 640px) {
+  .wall-tile { width: 260px; }
+  .view-switch { bottom: 16px; }
+  .shelf-h { flex-direction: column; gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wall.is-entering .wall-tile > * { animation: none; }
+}

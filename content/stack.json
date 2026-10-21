@@ -1,0 +1,36 @@
+{
+  "categories": [
+    { "id": "foundation", "name": "框架与语言", "en": "Foundation" },
+    { "id": "ui", "name": "样式与组件", "en": "UI" },
+    { "id": "interaction", "name": "交互与动效", "en": "Interaction" },
+    { "id": "data", "name": "状态与数据", "en": "Data" },
+    { "id": "forms", "name": "表单与校验", "en": "Forms" },
+    { "id": "charts", "name": "图表", "en": "Charts" },
+    { "id": "utils", "name": "编辑与工具", "en": "Utilities" }
+  ],
+  "items": [
+    { "id": "nextjs", "name": "Next.js", "url": "https://nextjs.org", "category": "foundation", "note": "React 全栈框架" },
+    { "id": "typescript", "name": "TypeScript", "url": "https://www.typescriptlang.org", "category": "foundation", "note": "带类型的 JavaScript" },
+    { "id": "tailwind", "name": "Tailwind CSS", "url": "https://tailwindcss.com", "category": "ui", "note": "原子化样式" },
+    { "id": "radix", "name": "Radix Primitives", "url": "https://www.radix-ui.com/primitives", "category": "ui", "note": "底层无头原语" },
+    { "id": "shadcn", "name": "shadcn/ui", "url": "https://ui.shadcn.com", "category": "ui", "note": "可复制源码的组件库" },
+    { "id": "lucide", "name": "Lucide", "url": "https://lucide.dev", "category": "ui", "note": "图标" },
+    { "id": "next-themes", "name": "next-themes", "url": "https://github.com/pacocoursey/next-themes", "category": "ui", "note": "深色和浅色主题切换" },
+    { "id": "motion", "name": "Motion", "url": "https://motion.dev", "category": "interaction", "note": "动画，前身是 Framer Motion" },
+    { "id": "reactflow", "name": "React Flow", "url": "https://reactflow.dev", "category": "interaction", "note": "节点流画布" },
+    { "id": "dnd-kit", "name": "dnd-kit", "url": "https://dndkit.com", "category": "interaction", "note": "拖拽" },
+    { "id": "resizable-panels", "name": "react-resizable-panels", "url": "https://github.com/bvaughn/react-resizable-panels", "category": "interaction", "note": "可拖动的分栏布局" },
+    { "id": "cmdk", "name": "cmdk", "url": "https://github.com/dip/cmdk", "category": "interaction", "note": "命令面板，就是 ⌘K 那种" },
+    { "id": "sonner", "name": "Sonner", "url": "https://sonner.emilkowal.ski", "category": "interaction", "note": "弹窗提示" },
+    { "id": "zustand", "name": "Zustand", "url": "https://zustand.docs.pmnd.rs", "category": "data", "note": "轻量状态管理" },
+    { "id": "tanstack-query", "name": "TanStack Query", "url": "https://tanstack.com/query", "category": "data", "note": "请求和缓存服务端数据" },
+    { "id": "tanstack-table", "name": "TanStack Table", "url": "https://tanstack.com/table", "category": "data", "note": "表格" },
+    { "id": "tanstack-virtual", "name": "TanStack Virtual", "url": "https://tanstack.com/virtual", "category": "data", "note": "长列表虚拟滚动" },
+    { "id": "react-hook-form", "name": "React Hook Form", "url": "https://react-hook-form.com", "category": "forms", "note": "表单" },
+    { "id": "zod", "name": "Zod", "url": "https://zod.dev", "category": "forms", "note": "数据校验" },
+    { "id": "recharts", "name": "Recharts", "url": "https://recharts.org", "category": "charts", "note": "图表" },
+    { "id": "shadcn-charts", "name": "shadcn Charts", "url": "https://ui.shadcn.com/charts", "category": "charts", "note": "基于 Recharts 的现成图表样式" },
+    { "id": "date-fns", "name": "date-fns", "url": "https://date-fns.org", "category": "utils", "note": "日期处理" },
+    { "id": "tiptap", "name": "Tiptap", "url": "https://tiptap.dev", "category": "utils", "note": "富文本编辑器" }
+  ]
+}

@@ -21,6 +21,10 @@ export function pageMeta(url) {
   else if (url === "/tags/") title = `Tags · ${site.title}`;
   else if (url === "/categories/") title = `Categories · ${site.title}`;
   else if (url === "/about/") title = `About · ${site.title}`;
+  else if (url === "/stack/") {
+    title = `Stack · ${site.title}`;
+    description = "fancy 的前端工具箱：做 Web 界面时反复用到的库和工具，按用途分类，可拖拽浏览。";
+  }
   else if (url === "/404.html") title = `404 · ${site.title}`;
   return { title, description, type };
 }
