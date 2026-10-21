@@ -22,6 +22,7 @@ function Nav() {
         </Link>
         <NavLink to="/archives/">文章</NavLink>
         <NavLink to="/tags/">标签</NavLink>
+        <NavLink to="/stack/">工具箱</NavLink>
         <NavLink to="/about/">关于</NavLink>
       </nav>
       <div className="nav-cta">
