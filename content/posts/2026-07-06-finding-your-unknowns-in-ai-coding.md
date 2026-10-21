@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "AI 编程里的未知，比 prompt 重要"
 legend: ["Find your", "unknowns"]
 author: fancyboi

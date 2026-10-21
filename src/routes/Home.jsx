@@ -65,7 +65,6 @@ function Writing() {
       <header className="writing-head">
         <h2 id="writing-h">Writing</h2>
         <div className="writing-aside">
-          <p>每篇回答一个具体问题，附上能复现的证据。新文章在最左边，往右是更早的。</p>
           <Link className="pills" to="/archives/">
             <span className="pill">全部 {posts.length} 篇</span>
             <span className="pill is-round" aria-hidden="true"><Arrow /></span>

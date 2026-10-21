@@ -45,6 +45,24 @@ function renderer(toc) {
 const stripLiquid = (s) => s.replace(/\{\{\s*["']([^"']+)["']\s*\|\s*relative_url\s*\}\}/g, "$1");
 
 // 中文按字、英文按词估算阅读时长
+// 邮票上的两行英文短标题：没写 legend 时取文件名里的 slug，前 4 个词去掉结尾虚词，按长度均分成两行
+const STOPWORDS = new Set(["a", "an", "the", "in", "of", "to", "for", "and", "with", "on", "at", "by", "is", "vs"]);
+const ACRONYMS = new Set(["ai", "llm", "mcp", "rag", "api", "ui", "ux", "cli", "sdk", "tdd", "gpt"]);
+export const legendFromSlug = (slug) => {
+  const words = slug.split("-").filter(Boolean).slice(0, 4)
+    .map((w) => (ACRONYMS.has(w) ? w.toUpperCase() : w));
+  while (words.length > 1 && STOPWORDS.has(words.at(-1))) words.pop();
+  words[0] = words[0][0].toUpperCase() + words[0].slice(1);
+  if (words.length < 2) return words;
+  let best = 1;
+  const len = (ws) => ws.join(" ").length;
+  for (let i = 1; i < words.length; i++) {
+    const gap = Math.abs(len(words.slice(0, i)) - len(words.slice(i)));
+    if (gap < Math.abs(len(words.slice(0, best)) - len(words.slice(best)))) best = i;
+  }
+  return [words.slice(0, best).join(" "), words.slice(best).join(" ")];
+};
+
 const readMinutes = (text) => {
   const cjk = (text.match(/[一-鿿]/g) || []).length;
   const words = (text.replace(/[一-鿿]/g, " ").match(/[A-Za-z0-9]+/g) || []).length;
@@ -72,8 +90,7 @@ export function buildContent() {
       tags: data.tags || [],
       image: data.image || null,
       readMin: readMinutes(content),
-      // 邮票上的两行短标题；没写就退回完整标题
-      legend: data.legend || [data.title],
+      legend: data.legend || legendFromSlug(slug),
     };
     posts.push(meta);
     fs.writeFileSync(path.join(postOut, `${slug}.json`), JSON.stringify({ html, toc }));

@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "AI 开始自己造自己了？这把戏人类玩了两百年"
 legend: ["AI builds", "itself"]
 author: fancyboi
