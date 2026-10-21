@@ -47,9 +47,12 @@ export function WordSwap({ as: Tag = "h1", before, after, swapped, out = 0, slot
             return [sep, <span key={k} className="ws-slot" style={{ "--i": idx }}>{slot}</span>];
           }
           const idx = i++;
+          // *词* 表示强调：换成标题的衬线斜体
+          const accent = /^\*.+\*$/.test(w);
+          if (accent) w = w.slice(1, -1);
           return [
             sep,
-            <span key={k} className="ws-word" data-side={idx % 2 ? "right" : "left"} style={{ "--i": idx }}>
+            <span key={k} className={`ws-word${accent ? " is-accent" : ""}`} data-side={idx % 2 ? "right" : "left"} style={{ "--i": idx }}>
               <span className="ws-mark" />
               <span className="ws-text">{w}</span>
             </span>,
@@ -58,7 +61,7 @@ export function WordSwap({ as: Tag = "h1", before, after, swapped, out = 0, slot
       </span>
     );
   };
-  const words = (after || before).filter((w) => w !== "{slot}");
+  const words = (after || before).filter((w) => w !== "{slot}").map((w) => w.replace(/^\*(.+)\*$/, "$1"));
   return (
     <Tag
       className={`ws ${swapped ? "is-swapped" : ""} ${className}`}

@@ -20,6 +20,7 @@
   --cjk: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
   --sans: "Geist Variable", var(--cjk);
   --mono: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+  --pixel: "Departure Mono", var(--mono), var(--cjk);
   --display: "Instrument Serif", "Songti SC", "Noto Serif CJK SC", serif;
 
   --type-display: clamp(44px, 7.4vw + 14px, 132px);
@@ -31,6 +32,14 @@
   --radius-card: 28px;
 
   color-scheme: light;
+}
+
+@font-face {
+  font-family: "Departure Mono";
+  src: url("../fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -102,15 +111,15 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   display: inline-flex; align-items: center; gap: 6px;
   padding: 2px 9px; border-radius: 999px;
   background: var(--paper); color: var(--muted);
-  font-size: 12px; line-height: 1.6; text-decoration: none;
+  font: 400 11px/1.8 var(--pixel); text-decoration: none;
   box-shadow: 0 0 0 1px var(--line-faded);
   transition: background-color 100ms ease-out, color 100ms ease-out;
 }
 a.chip:hover { background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--line-active); }
-.chip b { font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+.chip b { font-weight: 400; color: var(--ink); font-variant-numeric: tabular-nums; }
 .chip-ghost { background: transparent; }
-.chip-lg { padding: 6px 14px; font-size: 14px; }
-.chip-on-blue { padding: 6px 14px; font-size: 14px; background: rgba(255, 255, 255, 0.16); color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4); }
+.chip-lg { padding: 5px 12px; }
+.chip-on-blue { padding: 5px 12px; background: rgba(255, 255, 255, 0.16); color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4); }
 .chip-on-blue b { color: #fff; opacity: 0.7; }
 a.chip-on-blue:hover { background: #fff; color: var(--ink); }
 a.chip-on-blue:hover b { color: var(--ink); }
@@ -134,6 +143,8 @@ a.chip-on-blue:hover b { color: var(--ink); }
 }
 .hero-title .ws-slot .sprite { width: 100%; height: 100%; }
 .hero-title .ws-after { font-style: normal; font-family: var(--sans); font-weight: 500; letter-spacing: -0.03em; font-size: 0.7em; line-height: 1.04; }
+/* 强调词沿用标题的衬线斜体，衬线字面偏小，放大一档对齐 Geist 的视觉高度 */
+.hero-title .ws-after .is-accent { font: italic 400 1.18em/1 var(--display); letter-spacing: -0.01em; }
 .hero-bio {
   max-width: 34em; font-size: 20px; line-height: 1.6; color: var(--ink); text-wrap: pretty;
   animation: fade-up 900ms var(--ease-out-expo) 900ms both;
@@ -151,27 +162,76 @@ a.chip-on-blue:hover b { color: var(--ink); }
 @keyframes hint { 0% { scale: 1 0; } 50% { scale: 1 1; transform-origin: top; } 51% { transform-origin: bottom; } 100% { scale: 1 0; transform-origin: bottom; } }
 @keyframes fade-up { from { opacity: 0; translate: 0 12px; } }
 
-/* ---------- 首页 · Writing ---------- */
-.writing { position: relative; z-index: 1; padding: 40px var(--gutter) 160px; }
-.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 48px; }
-.section-head h2 { font: 500 var(--type-title)/0.86 var(--sans); letter-spacing: -0.03em; }
-.section-more { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); text-decoration: none; white-space: nowrap; }
-.section-more:hover { color: var(--ink); }
-.section-more:hover .nudge { animation: nudge 400ms var(--ease-out-quint) both; }
+/* ---------- 首页 · Writing：一排邮票 ---------- */
+.writing { position: relative; z-index: 1; padding: 40px 0 120px; }
+.writing-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; padding: 0 var(--gutter); }
+.writing-head h2 { font: italic 400 var(--type-display)/0.86 var(--display); }
+.writing-aside { display: grid; justify-items: start; gap: 24px; width: min(100%, 22rem); padding-bottom: 8px; }
+.writing-aside p { color: var(--muted); font-size: 16px; line-height: 1.6; text-wrap: pretty; }
+.pills { display: inline-flex; gap: 8px; text-decoration: none; }
+.pills .pill { transition: transform 100ms ease-out; }
+.pills:hover .pill { transform: scale(1.015); background: var(--slate); }
+.pills:active .pill { transform: scale(0.97); }
+.pills:hover .nudge { animation: nudge 400ms var(--ease-out-quint) both; }
 
-.post-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 16px; }
-.post-grid > .is-lead { grid-column: span 2; grid-row: span 2; }
+.stamp-row {
+  display: flex; gap: 48px; padding: 48px var(--gutter) 56px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+  scrollbar-width: none; overscroll-behavior-x: contain;
+}
+.stamp-row::-webkit-scrollbar { display: none; }
+.stamp-row > li { flex: none; scroll-snap-align: start; }
 
-.post-card .post-media { position: relative; aspect-ratio: 4 / 3; background: var(--surface); border-radius: var(--radius); }
-/* 首图卡占两行：媒体区吃掉剩余高度。canvas 绝对定位，避免它的位图尺寸反过来撑高容器 */
-.post-card.is-lead { display: flex; flex-direction: column; }
-.post-card.is-lead .post-media { flex: 1; aspect-ratio: auto; min-height: 320px; border-radius: var(--radius-card); }
-.post-sky { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
-.post-caption { display: grid; gap: 8px; padding: 16px 4px 0; }
-.post-title { font: 500 20px/1.3 var(--sans); letter-spacing: -0.01em; text-wrap: balance; }
-.is-lead .post-title { font-size: clamp(24px, 1.4vw + 12px, 32px); line-height: 1.15; }
-.post-desc { color: var(--muted); font-size: 15px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.post-meta { color: var(--subtle); font: 400 12px/1.4 var(--mono); }
+/* 邮票：宽 16 个齿距、高 23 个齿距；上方是正方形像素画面，下方隔一排齿孔是签条 */
+.stamp {
+  --w: 280px; --across: 16; --down: 23; --border: 1.25; --hole: 0.38;
+  display: block; width: var(--w); color: var(--stamp-ink); text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.stamp-lift {
+  display: block; rotate: var(--turn); transition: transform 100ms ease-out, rotate 100ms ease-out;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06)) drop-shadow(0 10px 20px rgba(46, 51, 66, 0.08));
+}
+@media (hover: hover) and (pointer: fine) {
+  .stamp:hover .stamp-lift { rotate: 0deg; transform: translateY(-8px); }
+}
+.stamp:focus-visible { outline: none; }
+.stamp:focus-visible .stamp-lift { rotate: 0deg; transform: translateY(-8px); outline: 2px solid var(--ink); outline-offset: 6px; }
+.stamp:active .stamp-lift { transform: translateY(-4px) scale(0.98); }
+
+.stamp-sheet {
+  --pitch: calc(var(--w) / var(--across));
+  --edge: calc(var(--pitch) * var(--border));
+  --row: calc(var(--pitch) * var(--across));
+  --holes: radial-gradient(circle at center, transparent calc(var(--pitch) * var(--hole)), #000 calc(var(--pitch) * var(--hole) + 0.5px));
+  position: relative; display: block; width: var(--w); height: calc(var(--pitch) * var(--down));
+  container-type: inline-size;
+  /* 画面与签条之间的一排齿孔：上下两块实心 + 中间一条只有孔的带子 */
+  mask:
+    linear-gradient(#000, #000) top / 100% calc(var(--row) - var(--pitch) / 2) no-repeat,
+    linear-gradient(#000, #000) bottom / 100% calc(100% - var(--row) - var(--pitch) / 2) no-repeat,
+    var(--holes) calc(var(--pitch) / -2) calc(var(--row) - var(--pitch) / 2) / var(--pitch) var(--pitch) repeat-x;
+}
+/* 四周的齿孔：孔心落在边线上的网格，叠上一块缩进半个齿距的实心矩形 */
+.stamp-paper {
+  position: absolute; inset: 0; background: var(--surface);
+  mask:
+    var(--holes) calc(var(--pitch) / -2) calc(var(--pitch) / -2) / var(--pitch) var(--pitch) repeat,
+    linear-gradient(#000, #000) center / calc(100% - var(--pitch)) calc(100% - var(--pitch)) no-repeat;
+}
+.stamp-field { position: absolute; top: var(--edge); left: var(--edge); right: var(--edge); aspect-ratio: 1; overflow: hidden; background: #fff; }
+.stamp-sky { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; transition: scale 600ms var(--ease-in-out-quart); }
+@media (hover: hover) and (pointer: fine) {
+  .stamp:hover .stamp-sky { scale: 1.06; }
+}
+.stamp-words {
+  position: absolute; left: var(--edge); right: var(--edge); bottom: var(--edge);
+  display: flex; align-items: flex-end; gap: calc(var(--pitch) * 0.5);
+}
+.stamp-told { display: flex; flex-direction: column; gap: calc(var(--pitch) * 0.35); margin-right: auto; }
+.stamp-issued { font: 500 3.2cqi/1 var(--sans); font-variant-numeric: tabular-nums; }
+.stamp-title { display: flex; flex-direction: column; font: italic 400 9cqi/0.9 var(--display); white-space: nowrap; }
+.stamp-count { font: 400 12cqi/0.74 var(--sans); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
 
 /* ---------- 首页 · Values：像素过渡带接入整块蓝色 ---------- */
 .values { position: relative; color: #fff; }
@@ -235,6 +295,7 @@ a.chip-on-blue:hover b { color: var(--ink); }
 .post-head-inner { position: relative; display: grid; gap: 20px; max-width: 920px; padding-top: 236px; }
 .post-h1 { font: 500 clamp(34px, 3vw + 18px, 64px)/1.1 var(--sans); letter-spacing: -0.02em; text-wrap: balance; }
 .post-lead { max-width: 40em; color: var(--slate); font-size: 19px; line-height: 1.65; }
+.post-meta { color: var(--subtle); font: 400 12px/1.4 var(--mono); }
 
 .post-layout {
   display: grid; grid-template-columns: 220px minmax(0, 720px); gap: 64px;
@@ -253,7 +314,8 @@ a.chip-on-blue:hover b { color: var(--ink); }
 .toc a:hover { color: var(--ink); }
 .toc .is-active a { color: var(--ink); border-left-color: var(--ink); }
 
-.post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 120px var(--gutter) 0; }
+.post-nav { display: flex; flex-wrap: wrap; gap: 48px; padding: 120px var(--gutter) 0; }
+.post-nav .stamp { --w: 240px; }
 .post-nav-h { margin-bottom: 12px; color: var(--subtle); font: 400 12px/1 var(--mono); }
 .post .page-foot { padding-inline: var(--gutter); }
 
@@ -317,9 +379,6 @@ a.chip-on-blue:hover b { color: var(--ink); }
   .toc { display: none; }
 }
 @media (max-width: 960px) {
-  .post-grid { grid-template-columns: repeat(2, 1fr); }
-  .post-grid > .is-lead { grid-column: span 2; grid-row: auto; }
-  .post-card.is-lead .post-media { flex: none; min-height: 0; aspect-ratio: 16 / 9; }
   .values-body h2, .values-right { grid-column: 1 / -1; }
 }
 @media (max-width: 640px) {
@@ -330,9 +389,9 @@ a.chip-on-blue:hover b { color: var(--ink); }
   .nav-logo { margin-right: 0; }
   .nav-logo span, .nav-cta .pill:not(.is-round) { display: none; }
   .hero-bio { font-size: 17px; }
-  .post-grid { grid-template-columns: 1fr; }
-  .post-grid > .is-lead { grid-column: auto; }
-  .section-head { flex-direction: column; align-items: flex-start; }
+  .writing-head { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .stamp-row { gap: 28px; padding-block: 32px 48px; }
+  .stamp { --w: 232px; }
   .seam { height: 140px; }
   .values-right p { font-size: 17px; }
   .year { grid-template-columns: 1fr; }
@@ -341,7 +400,6 @@ a.chip-on-blue:hover b { color: var(--ink); }
   .row-tags { display: none; }
   .post-head-inner { padding-top: 170px; }
   .post-head-sky { height: 140px; }
-  .post-nav { grid-template-columns: 1fr; }
   .prose { font-size: 16px; }
   .lost-copy { padding: 32px 24px; }
 }

@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router";
 import { posts, postBySlug, getBody, loadBody, formatDate, seedOf, termSlug } from "../content.js";
 import { PixelSky } from "../components/fx.jsx";
 import { Footer } from "../components/Layout.jsx";
-import PostCard from "../components/PostCard.jsx";
+import Stamp, { turnOf } from "../components/Stamp.jsx";
 import NotFound from "./NotFound.jsx";
 
 // 正文缓存在 content.js；这里只在缓存未命中时加载，加载完触发一次重渲染
@@ -84,8 +84,8 @@ export default function Post() {
       </div>
 
       <nav className="post-nav" aria-label="更多文章">
-        {newer ? <div><p className="post-nav-h">较新</p><PostCard post={newer} /></div> : <div />}
-        {older ? <div><p className="post-nav-h">较早</p><PostCard post={older} /></div> : <div />}
+        {newer ? <div><p className="post-nav-h">较新</p><Stamp post={newer} turn={turnOf(newer.slug, 0)} /></div> : <div />}
+        {older ? <div><p className="post-nav-h">较早</p><Stamp post={older} turn={turnOf(older.slug, 1)} /></div> : <div />}
       </nav>
       <div className="page-foot"><Footer /></div>
     </article>

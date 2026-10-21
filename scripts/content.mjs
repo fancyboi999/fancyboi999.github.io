@@ -72,11 +72,15 @@ export function buildContent() {
       tags: data.tags || [],
       image: data.image || null,
       readMin: readMinutes(content),
+      // 邮票上的两行短标题；没写就退回完整标题
+      legend: data.legend || [data.title],
     };
     posts.push(meta);
     fs.writeFileSync(path.join(postOut, `${slug}.json`), JSON.stringify({ html, toc }));
   }
   posts.sort((a, b) => b.date.localeCompare(a.date));
+  // 邮票编号：最早一篇是 01
+  posts.forEach((p, i) => { p.no = posts.length - i; });
 
   const index = (key) => {
     const map = new Map();

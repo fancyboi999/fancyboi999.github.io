@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Deep Research现有方案技术总结：实现架构、特点对比、现存问题及未来方向"
+legend: ["Deep", "research"]
 author: fancyboi
 categories: [研究]
 tags: [deep-research, AI, 技术总结]

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "AI 编程里的未知，比 prompt 重要"
+legend: ["Find your", "unknowns"]
 author: fancyboi
 date: 2026-07-06 12:40:00 +0800
 categories: [研究]

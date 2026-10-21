@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Agent 自进化进展盘点：参数没动，凭什么叫'进化'"
+legend: ["Agents that", "evolve"]
 author: fancyboi
 date: 2026-05-18 12:00:00 +0800
 categories: [研究]

@@ -97,7 +97,8 @@ export function buildCells({ width, height, cell, seed, reveal = "radial", clear
 }
 
 export function drawCells(ctx, cells, colors, level, dpr, cell) {
-  const px = Math.max(1, Math.round((cell * dpr) / 10));
+  // 棋盘格至少 2 个 CSS 像素：格子很小或画布被旋转时，1 设备像素的棋盘格会被重采样成条纹
+  const px = Math.max(Math.round((cell * dpr) / 10), Math.round(2 * dpr));
   const fills = [colors.deep, checker(ctx, colors.deep, colors.mid, px), colors.mid, checker(ctx, colors.mid, colors.pale, px)];
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   for (const c of cells) {

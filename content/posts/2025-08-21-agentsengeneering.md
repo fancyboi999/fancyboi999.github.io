@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Manus 自主 AI 智能体技术分析与开源复现路线"
+legend: ["Open", "Manus"]
 author: fancyboi
 date: 2025-08-21 00:00:00 +0800
 categories: [研究]

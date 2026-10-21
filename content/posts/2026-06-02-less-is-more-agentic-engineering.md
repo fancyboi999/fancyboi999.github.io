@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "少即是多：我最出活的 agent 配置，反而是最简陋的那套"
+legend: ["Less is", "more"]
 author: fancyboi
 date: 2026-06-02 12:00:00 +0800
 categories: [研究]

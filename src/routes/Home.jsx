@@ -4,8 +4,8 @@ import { site } from "../site.js";
 import { posts, tags } from "../content.js";
 import { PixelSky, PixelSprite, WordSwap, useInView } from "../components/fx.jsx";
 import { Arrow, Footer } from "../components/Layout.jsx";
-import PostCard from "../components/PostCard.jsx";
-import { scrollStage, range, steps, flowIn } from "../fx/scroll-stage.js";
+import Stamp, { turnOf } from "../components/Stamp.jsx";
+import { scrollStage, range, steps } from "../fx/scroll-stage.js";
 
 const SLOT_COLORS = ["#00aaff", "#77ccff", "#000000"];
 
@@ -60,20 +60,21 @@ function Hero() {
 }
 
 function Writing() {
-  const grid = useRef(null);
-  useEffect(() => { const io = flowIn(grid.current.parentElement); return () => io.disconnect(); }, []);
-  const latest = posts.slice(0, 6);
   return (
     <section className="writing" aria-labelledby="writing-h">
-      <header className="section-head">
+      <header className="writing-head">
         <h2 id="writing-h">Writing</h2>
-        <Link className="section-more" to="/archives/">全部 {posts.length} 篇 <Arrow /></Link>
+        <div className="writing-aside">
+          <p>每篇回答一个具体问题，附上能复现的证据。新文章在最左边，往右是更早的。</p>
+          <Link className="pills" to="/archives/">
+            <span className="pill">全部 {posts.length} 篇</span>
+            <span className="pill is-round" aria-hidden="true"><Arrow /></span>
+          </Link>
+        </div>
       </header>
-      <div className="post-grid" ref={grid} data-flow>
-        {latest.map((p, i) => (
-          <PostCard key={p.slug} post={p} lead={i === 0} style={{ "--delay": `${i * 0.08}s`, "--x": `${(i % 3) * 40}px` }} />
-        ))}
-      </div>
+      <ul className="stamp-row">
+        {posts.map((p, i) => <li key={p.slug}><Stamp post={p} turn={turnOf(p.slug, i)} /></li>)}
+      </ul>
     </section>
   );
 }

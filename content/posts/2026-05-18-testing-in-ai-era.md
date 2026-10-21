@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "测试都分什么？从 Myers 1979 到 vibe coding 的完整地图"
+legend: ["A map of", "testing"]
 author: fancyboi
 date: 2026-05-18 00:00:00 +0800
 categories: [研究]
