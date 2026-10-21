@@ -17,6 +17,7 @@ function Hero() {
 
   useEffect(() => {
     const s = scrollStage(stage.current, {
+      scroller: stage.current.closest("[data-stage]"),
       onProgress(p, el) {
         setState({ out: range(p, 0, 0.3), swapped: p >= 0.2 });
         el.style.setProperty("--hint", String(1 - range(p, 0, 0.08)));

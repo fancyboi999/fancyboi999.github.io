@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Link, NavLink, Outlet, useLocation } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 import Lenis from "lenis";
 import { site } from "../site.js";
 import { PixelSprite } from "./fx.jsx";
@@ -44,33 +44,26 @@ export function Footer() {
   );
 }
 
-// 平滑滚动：仅接管滚轮，触屏保持原生；reduced-motion 下不启用
-function useSmoothScroll() {
-  const lenis = useRef(null);
-  const { pathname, hash } = useLocation();
+// 平滑滚动：页面在卡片内的 [data-stage] 里滚动，Lenis 接管这个容器；reduced-motion 下不启用
+function useSmoothScroll(root) {
   useEffect(() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const l = new Lenis({ autoRaf: true, anchors: { offset: -96 } });
-    lenis.current = l;
-    window.__lenis = l;
-    return () => { l.destroy(); lenis.current = null; window.__lenis = null; };
-  }, []);
-  useEffect(() => {
-    if (hash) return;
-    if (lenis.current) lenis.current.scrollTo(0, { immediate: true });
-    else window.scrollTo(0, 0);
-  }, [pathname, hash]);
+    const wrapper = root.current.closest("[data-stage]");
+    const l = new Lenis({ wrapper, content: root.current, autoRaf: true, anchors: { offset: -96 } });
+    return () => l.destroy();
+  }, [root]);
 }
 
 export default function Layout() {
-  useSmoothScroll();
+  const root = useRef(null);
+  useSmoothScroll(root);
   return (
-    <>
+    <div className="page-root" ref={root}>
       <a className="skip" href="#main">跳到正文</a>
       <Nav />
       <main id="main">
         <Outlet />
       </main>
-    </>
+    </div>
   );
 }

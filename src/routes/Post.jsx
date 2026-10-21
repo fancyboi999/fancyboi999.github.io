@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router";
 import { posts, postBySlug, getBody, loadBody, formatDate, seedOf, termSlug } from "../content.js";
 import { PixelSky } from "../components/fx.jsx";
@@ -19,11 +19,12 @@ function useBody(slug) {
 }
 
 // 目录高亮：当前视口上部 1/3 处所在的章节
-function useActiveHeading(toc) {
+function useActiveHeading(root, toc) {
   const [active, setActive] = useState(null);
   useEffect(() => {
-    if (!toc?.length) return;
-    const els = toc.map((t) => document.getElementById(t.slug)).filter(Boolean);
+    if (!toc?.length || !root.current) return;
+    const scroller = root.current.closest("[data-stage]");
+    const els = toc.map((t) => root.current.querySelector(`[id="${CSS.escape(t.slug)}"]`)).filter(Boolean);
     const onScroll = () => {
       const line = innerHeight * 0.3;
       let cur = els[0]?.id;
@@ -31,9 +32,9 @@ function useActiveHeading(toc) {
       setActive(cur);
     };
     onScroll();
-    addEventListener("scroll", onScroll, { passive: true });
-    return () => removeEventListener("scroll", onScroll);
-  }, [toc]);
+    scroller.addEventListener("scroll", onScroll, { passive: true });
+    return () => scroller.removeEventListener("scroll", onScroll);
+  }, [root, toc]);
   return active;
 }
 
@@ -41,7 +42,8 @@ export default function Post() {
   const { slug } = useParams();
   const post = postBySlug[slug];
   const body = useBody(slug);
-  const active = useActiveHeading(body?.toc);
+  const root = useRef(null);
+  const active = useActiveHeading(root, body?.toc);
   if (!post) return <NotFound />;
 
   const i = posts.indexOf(post);
@@ -49,7 +51,7 @@ export default function Post() {
   const seed = seedOf(slug) % 100000;
 
   return (
-    <article className="post">
+    <article className="post" ref={root}>
       <header className="post-head">
         <PixelSky className="post-head-sky" options={{ cell: 18, seed, reveal: "rows", steps: 5, cover: 0.5, feather: 0, shape: (x, y) => y * 0.55 - 0.2 }} play={{ ms: 600 }} />
         <div className="post-head-inner">

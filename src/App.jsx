@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router";
 import Layout from "./components/Layout.jsx";
+import Shell from "./components/Shell.jsx";
 import Home from "./routes/Home.jsx";
 import Post from "./routes/Post.jsx";
 import About from "./routes/About.jsx";
@@ -14,9 +15,10 @@ import "./fx/word-swap.css";
 import "./fx/motion.css";
 import "./styles/global.css";
 
-export default function App() {
+// 每张卡片按自己的 location 渲染路由，换页时新旧两页可以同时存在
+function Page({ location }) {
   return (
-    <Routes>
+    <Routes location={location}>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="posts/:slug" element={<Post />} />
@@ -30,4 +32,8 @@ export default function App() {
       </Route>
     </Routes>
   );
+}
+
+export default function App() {
+  return <Shell Page={Page} />;
 }
