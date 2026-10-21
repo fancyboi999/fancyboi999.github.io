@@ -6,7 +6,7 @@ description: >-
   token 与 src/styles/global.css、src/components/Stamp.jsx 中的值一致，改样式时两边同步。
 colors:
   primary: "#000000"
-  secondary: "#00AAFF"
+  secondary: "#007AB8"
   ink: "#000000"
   paper: "#F8F8FA"
   surface: "#FFFFFF"
@@ -26,6 +26,10 @@ colors:
   stamp-pink-mid: "#FFB3DB"
   stamp-green: "#2FC47A"
   stamp-green-mid: "#A6E9C6"
+  stamp-blue-text: "#007AB8"
+  stamp-orange-text: "#A86500"
+  stamp-pink-text: "#D13486"
+  stamp-green-text: "#208553"
   code-ground: "#0D0F14"
   code-ink: "#E8EAF0"
 typography:
@@ -126,23 +130,31 @@ components:
     textColor: "{colors.ink}"
   stamp:
     backgroundColor: "{colors.surface}"
-    textColor: "{colors.stamp-blue}"
+    textColor: "{colors.stamp-blue-text}"
     width: 280px
+  stamp-ink:
+    backgroundColor: "{colors.stamp-blue}"
   stamp-dither:
     backgroundColor: "{colors.stamp-blue-mid}"
   stamp-orange:
     backgroundColor: "{colors.surface}"
-    textColor: "{colors.stamp-orange}"
+    textColor: "{colors.stamp-orange-text}"
+  stamp-orange-ink:
+    backgroundColor: "{colors.stamp-orange}"
   stamp-orange-dither:
     backgroundColor: "{colors.stamp-orange-mid}"
   stamp-pink:
     backgroundColor: "{colors.surface}"
-    textColor: "{colors.stamp-pink}"
+    textColor: "{colors.stamp-pink-text}"
+  stamp-pink-ink:
+    backgroundColor: "{colors.stamp-pink}"
   stamp-pink-dither:
     backgroundColor: "{colors.stamp-pink-mid}"
   stamp-green:
     backgroundColor: "{colors.surface}"
-    textColor: "{colors.stamp-green}"
+    textColor: "{colors.stamp-green-text}"
+  stamp-green-ink:
+    backgroundColor: "{colors.stamp-green}"
   stamp-green-dither:
     backgroundColor: "{colors.stamp-green-mid}"
   blue-section:
@@ -188,9 +200,10 @@ components:
 ## Colors
 
 - **ink `#000` / paper `#F8F8FA` / surface `#FFF`** 构成几乎全部界面。主按钮是黑色胶囊。
-- **天蓝 `#00AAFF → #77CCFF → #FFF`** 是唯一的品牌色，只用作像素天空的三档色阶和整块蓝色区块，不用于小字或细线。
+- **天蓝 `#00AAFF → #77CCFF → #FFF`** 是唯一的品牌色，只用作像素天空的三档色阶，不用于文字或细线。
+- **深蓝 `#007AB8`** 是蓝色区块的底色，白字在上面的对比度是 4.69:1。区块上方的像素过渡带把色阶压一档（`#007AB8 → #00AAFF → #77CCFF`），最深一档与底色衔接。
 - **灰阶**：`slate #2E3342` 用于副文和标签，`muted #646465` 用于说明文字，`subtle #9B9B9B` 只用于日期、页码这类元信息，`line #CACACD` 用于分隔线。
-- **邮票四色**：蓝、橙、粉、绿，每色一深一浅。按文章编号 `(no − 1) % 4` 轮换，01 是蓝；编号从最早一篇算起，发新文章不会改变旧文章的颜色。
+- **邮票四色**：蓝、橙、粉、绿。每色三档：深、浅两档印像素画面，签条文字用同色系加深的第三档（`#007AB8`、`#A86500`、`#D13486`、`#208553`，白底对比度都在 4.6:1 以上）。按文章编号 `(no − 1) % 4` 轮换，01 是蓝；编号从最早一篇算起，发新文章不会改变旧文章的颜色。
 - **描边**用黑色 4% / 8% / 14% 透明度，写成 `box-shadow: 0 0 0 1px`，分别对应静止、默认和悬停。
 
 ## Typography
@@ -240,21 +253,4 @@ components:
 - Do：每屏只留一处有性格的元素，其余保持安静。
 - Do：装饰性动效按步数跳变，功能性动效平滑过渡（见 MOTION.md）。
 - Do：所有动效尊重 `prefers-reduced-motion`，直接给出最终状态。
-- Don't：天蓝色上放小号白字。白字在 `#00AAFF` 上对比度只有 2.56:1，只用于 20px 以上的文字。
-
-### 已知的对比度欠账
-
-`npx @google/design.md lint DESIGN.md` 会报下面 5 条对比度 warning，都对应当前真实的设计，暂时保留：
-
-| 组件 | 对比度 | 说明 |
-|---|---|---|
-| `stamp`（蓝字） | 2.56:1 | 邮票签条上的日期、短标题和编号直接用油墨色 |
-| `stamp-orange` | 2.14:1 | 同上 |
-| `stamp-pink` | 3.23:1 | 同上 |
-| `stamp-green` | 2.26:1 | 同上 |
-| `blue-section` | 2.56:1 | 蓝色区块里的白字，只用于 20px 以上 |
-
-邮票整体有完整标题作为无障碍名称，签条上的字对读屏没有影响，但对低视力读者偏淡。要消掉这几条，需要把签条文字换成更深的同色系，或给蓝色区块换更深的底色。
-- Don't：加边框；用 1px 透明描边。
-- Don't：同一页里同时出现 Display 和 Title 两种大标题。
-- Don't：在正文里用斜体衬线；它只用于标题、短标题、强调词和标签。
+- Don't：在亮天蓝 `#00AAFF` 或浅色色阶上放文字；文字放在深蓝 `#007AB8` 或纸白上。

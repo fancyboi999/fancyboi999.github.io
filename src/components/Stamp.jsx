@@ -2,12 +2,12 @@ import { Link } from "react-router";
 import { formatDate, seedOf } from "../content.js";
 import { PixelSky } from "./fx.jsx";
 
-// 按编号轮换的四色油墨：deep 印深色，mid 印中间调，底色是纸白
+// 按编号轮换的四色油墨：deep、mid 印像素画面，text 是签条文字（同色系加深到白底对比度 ≥ 4.5:1）
 const INKS = [
-  { deep: "#00aaff", mid: "#99ddff" },
-  { deep: "#ff9900", mid: "#ffd699" },
-  { deep: "#ff3fa4", mid: "#ffb3db" },
-  { deep: "#2fc47a", mid: "#a6e9c6" },
+  { deep: "#00aaff", mid: "#99ddff", text: "#007ab8" },
+  { deep: "#ff9900", mid: "#ffd699", text: "#a86500" },
+  { deep: "#ff3fa4", mid: "#ffb3db", text: "#d13486" },
+  { deep: "#2fc47a", mid: "#a6e9c6", text: "#208553" },
 ];
 
 // 每张邮票固定的倾斜角：左右交替，幅度由 slug 决定，每次构建都一样
@@ -16,7 +16,7 @@ export const turnOf = (slug, i) => (i % 2 ? 1 : -1) * (0.5 + (seedOf(slug) % 100
 export default function Stamp({ post, turn = 0 }) {
   const ink = INKS[(post.no - 1) % INKS.length];
   return (
-    <Link className="stamp" to={`/posts/${post.slug}/`} aria-label={post.title} style={{ "--turn": `${turn.toFixed(2)}deg`, "--stamp-ink": ink.deep }}>
+    <Link className="stamp" to={`/posts/${post.slug}/`} aria-label={post.title} style={{ "--turn": `${turn.toFixed(2)}deg`, "--stamp-ink": ink.text }}>
       <span className="stamp-lift">
         <span className="stamp-sheet" aria-hidden="true">
           <span className="stamp-paper" />

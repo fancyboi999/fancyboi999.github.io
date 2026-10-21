@@ -12,7 +12,7 @@
   --line-faded: rgba(0, 0, 0, 0.04);
   --line-soft: rgba(0, 0, 0, 0.08);
   --line-active: rgba(0, 0, 0, 0.14);
-  --blue: #0af;
+  --blue: #007ab8; /* 蓝色区块底色：白字对比度 4.69:1；像素天空仍用更亮的 --sky-deep */
   --sky-deep: #0af;
   --sky-mid: #7cf;
   --sky-pale: #fff;
@@ -239,7 +239,8 @@ a.chip-on-blue:hover b { color: var(--ink); }
 
 /* ---------- 首页 · Values：像素过渡带接入整块蓝色 ---------- */
 .values { position: relative; color: #fff; }
-.seam { display: block; width: 100%; height: 220px; image-rendering: pixelated; }
+/* 过渡带的三档色阶整体压一档，最深一档与区块底色相同 */
+.seam { --sky-deep: var(--blue); --sky-mid: #0af; --sky-pale: #7cf; display: block; width: 100%; height: 220px; image-rendering: pixelated; }
 .values-body {
   display: grid; grid-template-columns: repeat(12, 1fr); gap: 40px 16px;
   padding: 40px var(--gutter) 160px; background: var(--blue);
