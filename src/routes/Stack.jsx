@@ -7,9 +7,9 @@ import { PixelSprite } from "../components/fx.jsx";
 import { Arrow, Footer } from "../components/Layout.jsx";
 
 const N = stackItems.length;
-const TILE_W = 320;
-const PITCH_X = 384; // 列距
-const PITCH_Y = 344; // 行距
+const TILE_W = 400;
+const PITCH_X = 464; // 列距
+const PITCH_Y = 400; // 行距
 const mod = (a, n) => ((a % n) + n) % n;
 // 相邻格子（左右差 5、上下差 3、对角差 2 或 8）对 23 取模都不为 0，所以邻居永远不重复
 const itemAt = (c, r) => stackItems[mod(c * 5 + r * 3, N)];
