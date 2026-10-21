@@ -20,7 +20,8 @@
   --cjk: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
   --sans: "Geist Variable", var(--cjk);
   --mono: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
-  --pixel: "Departure Mono", var(--mono), var(--cjk);
+  /* 标签：pi.dev 副标题用的 Plantin 是商业字体，换成最接近的开源旧式衬线 Newsreader 斜体 */
+  --tag: "Newsreader Variable", "Songti SC", "Noto Serif CJK SC", serif;
   --display: "Instrument Serif", "Songti SC", "Noto Serif CJK SC", serif;
 
   --type-display: clamp(44px, 7.4vw + 14px, 132px);
@@ -32,14 +33,6 @@
   --radius-card: 28px;
 
   color-scheme: light;
-}
-
-@font-face {
-  font-family: "Departure Mono";
-  src: url("../fonts/DepartureMono-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -121,15 +114,16 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   display: inline-flex; align-items: center; gap: 6px;
   padding: 2px 9px; border-radius: 999px;
   background: var(--paper); color: var(--muted);
-  font: 400 11px/1.8 var(--pixel); text-decoration: none;
+  font: italic 400 14px/1.5 var(--tag); text-decoration: none;
+  font-synthesis-style: none; /* 中文回退字体没有斜体，不要浏览器硬斜 */
   box-shadow: 0 0 0 1px var(--line-faded);
   transition: background-color 100ms ease-out, color 100ms ease-out;
 }
 a.chip:hover { background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--line-active); }
 .chip b { font-weight: 400; color: var(--ink); font-variant-numeric: tabular-nums; }
 .chip-ghost { background: transparent; }
-.chip-lg { padding: 5px 12px; }
-.chip-on-blue { padding: 5px 12px; background: rgba(255, 255, 255, 0.16); color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4); }
+.chip-lg { padding: 4px 13px; font-size: 16px; }
+.chip-on-blue { padding: 4px 13px; font-size: 16px; background: rgba(255, 255, 255, 0.16); color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4); }
 .chip-on-blue b { color: #fff; opacity: 0.7; }
 a.chip-on-blue:hover { background: #fff; color: var(--ink); }
 a.chip-on-blue:hover b { color: var(--ink); }
