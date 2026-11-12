@@ -28,6 +28,7 @@ export function routes() {
     "/categories/",
     "/about/",
     "/stack/",
+    "/prompts/",
     ...posts.map((p) => `/posts/${p.slug}/`),
     ...tags.map((t) => `/tags/${t.slug}/`),
     ...categories.map((c) => `/categories/${c.slug}/`),

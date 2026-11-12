@@ -6,7 +6,7 @@ import Post from "./routes/Post.jsx";
 import About from "./routes/About.jsx";
 import NotFound from "./routes/NotFound.jsx";
 import Stack from "./routes/Stack.jsx";
-import PromptsPrototype from "./routes/Prompts.prototype.jsx"; // PROTOTYPE
+import Prompts from "./routes/Prompts.jsx";
 import { Archives, TermIndex, TermPage } from "./routes/Lists.jsx";
 
 import "@fontsource-variable/geist";
@@ -31,7 +31,7 @@ function Page({ location }) {
         <Route path="categories" element={<TermIndex kind="categories" />} />
         <Route path="categories/:term" element={<TermPage kind="categories" />} />
         <Route path="stack" element={<Stack />} />
-        <Route path="prompts" element={<PromptsPrototype />} /> {/* PROTOTYPE */}
+        <Route path="prompts" element={<Prompts />} />
         <Route path="about" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Route>
