@@ -5,68 +5,14 @@
 //   C 调配台：搜索优先，选中后自动抽出 {{变量}}，边填边看成品再复制
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PixelSky, PixelSprite } from "../components/fx.jsx";
-import { Footer } from "../components/Layout.jsx";
+import { Arrow, Footer } from "../components/Layout.jsx";
 import PrototypeSwitcher, { useVariant } from "../components/PrototypeSwitcher.jsx";
 import { seedOf } from "../content.js";
+import { prompts } from "../prompts.js";
 import "./prompts.prototype.css";
 
-// 示例数据：取自 fancy 的全局 CLAUDE.md 与常用 skill。正式版放 content/prompts.json
-const PROMPTS = [
-  {
-    id: "soul", title: "SouL · 人设", legend: ["Colleague,", "not servant"], tags: ["人设", "系统提示"], for: "Claude Code · Codex", added: "2026-03",
-    why: "一句话定下合作关系：同事，不是奴仆。模型会主动指出我的错误。",
-    body: `你叫 {{name}}。使用用户的语言，表达直接、客观，不谄媚，不把猜测当事实。
-以第一性原理洞察问题本质，以系统性方法解决根因，避免对特定方案的路径依赖。
-保持优秀的 Taste 及判断力，避免受到记忆等知识诅咒，避免变得平庸。
-用户可能会出错，当用户出现明显错误或决策冲突时，毫不留情地指出。你是同事，不是奴仆。`,
-  },
-  {
-    id: "clear", title: "Communicating clearly", legend: ["Write for", "low context"], tags: ["写作", "系统提示"], for: "所有 agent", added: "2026-05",
-    why: "让长任务的汇报能被“刚切回来的人”读懂。效果最明显的一段。",
-    body: `Write for an intelligent but low-context reader. The person reading has not seen your tool calls, your reasoning or the files you opened.
-Put the key points in the first few sentences. Practice progressive disclosure in your sentence order.
-Use plain words, and write in clear, understandable full sentences. Do not use a term or abbreviation that you made up during the work.
-Write mostly in the style of ASD-STE100 Simplified Technical English: short sentences, one idea per sentence, active voice.`,
-  },
-  {
-    id: "verify", title: "验证强度", legend: ["Verify by", "risk"], tags: ["工程", "验证"], for: "Claude Code", added: "2026-06",
-    why: "防止两种极端：什么都不测，或者把改一行文案升级成全量审计。",
-    body: `验证深度匹配风险，不把每个任务升级成完整审计：
-- 低风险文案、文档、只读分析：做最小相关检查。
-- 改变代码运行行为：运行受影响的定向测试或静态检查，并覆盖相关异常和边界。
-- 涉及 {{boundary}}：在对应真实边界补充验证；单测和 mock 不能替代未触达的真实边界。
-- 写代码前明确要证明的行为；修复问题时尽量保留修复前失败证据，并用相同触发条件复验。`,
-  },
-  {
-    id: "report", title: "长程任务收尾汇报", legend: ["Report", "the ending"], tags: ["写作", "工程"], for: "Claude Code · Codex", added: "2026-07",
-    why: "固定的五段结构，读最终回复就够了，不用翻过程。",
-    body: `长程任务交付按以下顺序给出：
-### 结果 —— 交付了什么、当前状态和产物位置。
-### 依据 —— 问题 / 原因 / 证据 / 修正 / 修正后的行为。
-### 验证 —— 检查 / 命令 / 实际结果 / 未覆盖范围。
-### 相邻发现 —— 一句 TL;DR，再列有证据的发现。
-### 剩余 TODO —— 只列实际剩余事项，无则写“无”。`,
-  },
-  {
-    id: "grill", title: "Grill me", legend: ["Grill", "relentlessly"], tags: ["思考", "评审"], for: "任意对话", added: "2026-08",
-    why: "方案拍板前用它压测一遍，问题一个一个问，不给我含糊过去。",
-    body: `Interview me relentlessly about {{plan}} until we reach a shared understanding.
-Walk down each branch of the decision tree, resolving dependencies between decisions one by one.
-Ask one question at a time. For each question, give your recommended answer.
-If a question can be answered by exploring the codebase, explore it instead of asking.`,
-  },
-  {
-    id: "slop", title: "Stop slop", legend: ["No more", "AI tells"], tags: ["写作", "评审"], for: "改稿", added: "2026-09",
-    why: "专门去掉“不是……而是……”、三连排比这些一眼 AI 的句式。",
-    body: `Rewrite the following text to remove predictable AI writing patterns.
-Cut: "not X, but Y" framings, triplets, hedges, throat-clearing openers, and summary closers.
-Keep the author's meaning and voice. Prefer concrete nouns and plain verbs.
-Language: {{language}}
-
-Text:
-{{text}}`,
-  },
-];
+// 数据来自 content/prompts.json；B、C 两个变体沿用旧字段名 added / for
+const PROMPTS = prompts.map((p) => ({ ...p, added: p.date.slice(0, 7), for: p.author }));
 const ALL_TAGS = [...new Set(PROMPTS.flatMap((p) => p.tags))];
 const INKS = [
   { deep: "#00aaff", mid: "#99ddff", text: "#007ab8" },
@@ -105,42 +51,105 @@ function Body({ text, values }) {
 }
 
 /* ---------------- A · 信笺 ---------------- */
+// 搜索：空格分词，每个词都要命中标题、英文短句、理由、正文、标签或用途之一
+const haystack = (p) => [p.title, p.legend.join(" "), p.why, p.body, p.zh, p.author, p.role, ...p.tags].join(" ").toLowerCase();
+function search(q) {
+  const terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  return terms.length ? PROMPTS.filter((p) => terms.every((t) => haystack(p).includes(t))) : PROMPTS;
+}
+// 标题里把命中的词标出来
+function Mark({ text, q }) {
+  const terms = q.trim().split(/\s+/).filter(Boolean).map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  if (!terms.length) return text;
+  return text.split(new RegExp(`(${terms.join("|")})`, "gi")).map((s, i) => (i % 2 ? <mark key={i}>{s}</mark> : s));
+}
+
 function VariantA() {
-  const [cur, setCur] = useState(PROMPTS[0].id);
+  const [q, setQ] = useState("");
+  const [picked, setCur] = useState(PROMPTS[0].id);
   const [done, copy] = useCopy();
-  const p = PROMPTS.find((x) => x.id === cur);
-  const no = PROMPTS.indexOf(p) + 1;
+  const input = useRef(null);
+  const list = useMemo(() => search(q), [q]);
+  // 选中项被搜索过滤掉时，落到结果第一条
+  const cur = list.some((x) => x.id === picked) || !list.length ? picked : list[0].id;
+  const p = list.length ? PROMPTS.find((x) => x.id === cur) : null;
+  const no = (x) => String(PROMPTS.indexOf(x) + 1).padStart(2, "0");
+
+  useEffect(() => {
+    const k = (e) => {
+      if (e.key !== "/" || e.target.closest?.("input, textarea")) return;
+      e.preventDefault();
+      input.current.focus();
+      input.current.select();
+    };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, []);
+  const onKey = (e) => {
+    const i = list.findIndex((x) => x.id === cur);
+    if (e.key === "ArrowDown" && list.length) { e.preventDefault(); setCur(list[Math.min(i + 1, list.length - 1)].id); }
+    if (e.key === "ArrowUp" && list.length) { e.preventDefault(); setCur(list[Math.max(i - 1, 0)].id); }
+    if (e.key === "Enter" && p) copy(p.id, p.body);
+    if (e.key === "Escape") { if (q) setQ(""); else input.current.blur(); }
+  };
+
   return (
     <div className="page pa">
       <header className="page-head">
-        <p className="kicker">{PROMPTS.length} 条 · 每天都在用</p>
+        <p className="kicker">{q ? `${list.length} / ${PROMPTS.length} 条` : `${PROMPTS.length} 条`}</p>
         <h1 className="page-title">Prompts</h1>
       </header>
       <div className="pa-split">
-        <ol className="pa-index">
-          {PROMPTS.map((x, i) => (
-            <li key={x.id}>
-              <button type="button" aria-current={x.id === cur} onClick={() => setCur(x.id)}>
-                <span className="pa-no">{String(i + 1).padStart(2, "0")}</span>
-                <span className="pa-t">{x.title}</span>
-                <span className="pa-tags">{x.tags[0]}</span>
-              </button>
-            </li>
-          ))}
-        </ol>
-        <article className="pa-letter" key={p.id}>
-          <span className="pa-stamp" style={{ "--sky-deep": INKS[(no - 1) % 4].deep, "--sky-mid": INKS[(no - 1) % 4].mid, "--sky-pale": "#fff" }}>
-            <PixelSky className="pa-stamp-sky" options={{ cell: 5, seed: seedOf(p.id) % 100000, reveal: "none", cover: 0.55, feather: 0 }} />
-          </span>
-          <p className="pa-meta">No.{String(no).padStart(2, "0")} · {p.added} · {p.for}</p>
-          <h2 className="pa-h">{p.legend.join(" ")}</h2>
-          <p className="pa-why">{p.why}</p>
-          <pre className="pa-body"><Body text={p.body} /></pre>
-          <div className="pa-foot">
-            <div className="chips">{p.tags.map((t) => <span key={t} className="chip">{t}</span>)}</div>
-            <CopyPill id={p.id} text={p.body} done={done} copy={copy} />
+        <aside className="pa-side">
+          <label className="pa-search">
+            <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.5" /><path d="m10.5 10.5 3 3" strokeLinecap="round" /></svg>
+            <span className="visually-hidden">搜索 prompt</span>
+            <input ref={input} type="search" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={onKey} placeholder="搜索标题、正文、标签" autoComplete="off" spellCheck="false" />
+            {q ? <button type="button" className="pa-clear" onClick={() => { setQ(""); input.current.focus(); }} aria-label="清空搜索">×</button> : <kbd>/</kbd>}
+          </label>
+          <ol className="pa-index" aria-label="prompt 目录">
+            {list.map((x) => (
+              <li key={x.id}>
+                <button type="button" aria-current={x.id === cur} onClick={() => setCur(x.id)}>
+                  <span className="pa-no">{no(x)}</span>
+                  <span className="pa-t"><Mark text={x.title} q={q} /></span>
+                  <span className="pa-tags">{x.tags[0]}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+          {q && list.length ? <p className="pa-keys">↑↓ 选择 · Enter 复制 · Esc 清空</p> : null}
+        </aside>
+        {p ? (
+          <article className="pa-letter" key={p.id}>
+            <span className="pa-stamp" style={{ "--sky-deep": INKS[(+no(p) - 1) % 4].deep, "--sky-mid": INKS[(+no(p) - 1) % 4].mid, "--sky-pale": "#fff" }}>
+              <PixelSky className="pa-stamp-sky" options={{ cell: 5, seed: seedOf(p.id) % 100000, reveal: "none", cover: 0.55, feather: 0 }} />
+            </span>
+            <p className="pa-meta">No.{no(p)}{p.date ? ` · ${p.date}` : ""}</p>
+            <h2 className="pa-h">{p.legend.join(" ")}</h2>
+            <p className="pa-why">{p.why}</p>
+            <pre className="pa-body" lang="en"><Body text={p.body} /></pre>
+            {p.zh ? <p className="pa-zh">{p.zh}</p> : null}
+            {p.note ? <p className="pa-note">{p.note}</p> : null}
+            <p className="pa-sign">
+              <span>— {p.author}</span>
+              {p.role ? <span className="pa-role">{p.role}</span> : null}
+              <a href={p.source.url} target="_blank" rel="noopener">{p.source.label}<Arrow /></a>
+            </p>
+            <div className="pa-foot">
+              <div className="chips">
+                {p.tags.map((t) => <button key={t} type="button" className="chip pa-tag" onClick={() => setQ(t)}>{t}</button>)}
+              </div>
+              <CopyPill id={p.id} text={p.body} done={done} copy={copy} />
+            </div>
+          </article>
+        ) : (
+          <div className="pa-empty">
+            <p className="pa-h">Nothing here.</p>
+            <p className="pa-why">没有找到“{q}”。试试换个词，或者按标签找：</p>
+            <div className="chips">{ALL_TAGS.map((t) => <button key={t} type="button" className="chip pa-tag" onClick={() => setQ(t)}>{t}</button>)}</div>
           </div>
-        </article>
+        )}
       </div>
       <div className="page-foot"><Footer /></div>
     </div>
