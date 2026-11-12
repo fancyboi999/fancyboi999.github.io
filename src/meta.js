@@ -25,6 +25,10 @@ export function pageMeta(url) {
     title = `Stack · ${site.title}`;
     description = "fancy 的前端工具箱：做 Web 界面时反复用到的库和工具，按用途分类，可拖拽浏览。";
   }
+  else if (url === "/prompts/") {
+    title = `Prompts · ${site.title}`;
+    description = "fancy 收藏的 prompt：在 AI 编程与日常工作中经过验证的提示词，附出处、原文与使用注意。";
+  }
   else if (url === "/404.html") title = `404 · ${site.title}`;
   return { title, description, type };
 }
