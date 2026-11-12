@@ -1,0 +1,74 @@
+{
+  "items": [
+    {
+      "id": "own-the-code",
+      "title": "这个代码库归你",
+      "legend": ["Say who", "owns the code"],
+      "author": "Anthropic",
+      "role": "Prompting Claude Fable 5.2",
+      "date": "",
+      "source": { "label": "官方文档", "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2#say-who-owns-the-code" },
+      "tags": ["编码", "系统提示"],
+      "why": "告诉模型代码是它自己的，它才会顺手整理结构。官方测试里，加上这句后合并重复代码的比例从不到 10% 升到约 75%。",
+      "note": "输出 token 会多 70–80%，还会做没被要求的改动。代码归你、只想少改时不要加。",
+      "body": "You are the owner and long-term maintainer of this codebase, and its design is up to you.",
+      "zh": "这个代码库是你的：它的用途和构建方式由你决定，而且你会继续在上面开发。"
+    },
+    {
+      "id": "implicit-state-machines",
+      "title": "找出隐式状态机",
+      "legend": ["Implicit", "state machines"],
+      "author": "Steve Ruiz",
+      "role": "tldraw 创始人",
+      "date": "2026-10-31",
+      "source": { "label": "原帖", "url": "https://x.com/steveruizok/status/2116552016218710389" },
+      "tags": ["审查", "调试"],
+      "why": "让 AI 把那些靠 isLoading、hasError 之类的开关变量拼出来的状态找出来，这类地方最容易冒出各种奇怪的 bug。",
+      "note": "",
+      "body": "find all of the implicit state machines in my app",
+      "zh": "找出我应用里所有隐式的状态机。"
+    },
+    {
+      "id": "project-checkup",
+      "title": "全项目体检",
+      "legend": ["Fix what", "you're sure of"],
+      "author": "Alex Albert",
+      "role": "Anthropic",
+      "date": "2026-11-09",
+      "source": { "label": "原帖", "url": "https://x.com/alexalbert__/status/2119884951550386671" },
+      "tags": ["审查", "重构"],
+      "why": "作者每出一个新模型都会拿这句在自己的项目上跑一遍。",
+      "note": "它会直接改它有把握的地方，跑之前先提交一次代码。",
+      "body": "Read this entire project and find everything that's broken, inconsistent, inefficient, or no longer needed. Fix what you're sure about and list the rest for me to review.",
+      "zh": "通读整个项目，找出所有坏掉的、不一致的、低效的或已经不需要的东西。有把握的直接修，其余的列出来给我审。"
+    },
+    {
+      "id": "interview-me",
+      "title": "先让 AI 采访你",
+      "legend": ["Interview me", "first"],
+      "author": "Addy Osmani",
+      "role": "",
+      "date": "2026-10-29",
+      "source": { "label": "原文", "url": "https://x.com/addyosmani/status/2115688494865465370" },
+      "tags": ["需求", "规划"],
+      "why": "需求没想清楚时用。等它写出需求文档后，再开一个新会话照着文档写代码。",
+      "note": "",
+      "body": "Interview me until you could write a spec.",
+      "zh": "一直采访我，直到你能写出需求文档。"
+    },
+    {
+      "id": "deeper-not-bigger",
+      "title": "要更深，不要更大",
+      "legend": ["Deeper,", "not bigger"],
+      "author": "Felix Rieseberg",
+      "role": "Anthropic Claude 工程负责人",
+      "date": "2026-10-13",
+      "source": { "label": "How to be more ambitious · Depth", "url": "https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/" },
+      "tags": ["思考", "写 prompt"],
+      "why": "先让模型说出这个领域的顶尖从业者会怎么做，再把我的 prompt 改写成那个版本。",
+      "note": "",
+      "body": "I want a deeper version of this task, not a bigger one. Before rewriting it: (1) say what a top professional in this field would do here that I'm not asking for; (2) name the rawest material they would start from instead of what has already been digested for me; (3) name the specific methods and tools they would use; (4) say what, other than you or me, would show the result is right. Then rewrite my prompt to ask for exactly that.",
+      "zh": "我要的是这件事更深的版本，而不是更大的版本。改写之前：(1) 说出这个领域的顶尖从业者在这里会做、而我没有要求的事；(2) 指出他们会从哪种最原始的材料入手，而不是用别人替我消化过的东西；(3) 说出他们会用的具体方法和工具；(4) 说出除了你和我之外，还有什么能证明结果是对的。然后改写我的 prompt，只要求恰好这些。"
+    }
+  ]
+}

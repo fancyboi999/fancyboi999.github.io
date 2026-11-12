@@ -1,0 +1,164 @@
+/* PROTOTYPE · /prompts/ 三个变体的样式，选定后折进 global.css 并删掉本文件 */
+
+/* 切换条：故意做成和站点不一样的高对比胶囊，一看就不是设计的一部分 */
+.proto-switch {
+  position: fixed; left: 50%; bottom: 20px; translate: -50% 0; z-index: 90;
+  display: flex; align-items: center; gap: 10px; padding: 6px;
+  border-radius: 999px; background: #ff3fa4; color: #fff;
+  font: 500 13px/1 var(--mono); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+.proto-switch button { width: 32px; height: 32px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.2); color: #fff; font: inherit; cursor: pointer; }
+.proto-switch button:hover { background: rgba(255, 255, 255, 0.35); }
+.proto-switch span { padding: 0 6px; white-space: nowrap; }
+
+/* 共用：变量胶囊、正文块 */
+.pv-var { padding: 0 6px; border-radius: 6px; background: rgba(0, 170, 255, 0.14); color: #007ab8; font-style: normal; }
+.pv-var::before { content: "{"; opacity: 0.5; }
+.pv-var::after { content: "}"; opacity: 0.5; }
+.pv-var.is-filled { background: rgba(47, 196, 122, 0.16); color: #208553; }
+.pv-var.is-filled::before, .pv-var.is-filled::after { content: none; }
+/* prompt 正文按“信的正文”排：与文章正文同一套 Geist 17/1.85。等宽字体没有中文字形，中英混排会割裂 */
+.pa-body {
+  margin: 0; padding: 4px 0 4px 24px; max-width: 40em;
+  border-left: 2px solid var(--ink);
+  font: 400 17px/1.85 var(--sans); white-space: pre-wrap; color: var(--ink);
+  text-wrap: pretty; overflow-wrap: anywhere;
+}
+.pa-body .pv-var { font: 500 0.88em/1 var(--mono); padding: 2px 6px; }
+.pa-why { color: var(--muted); font-size: 17px; line-height: 1.6; max-width: 36em; text-wrap: pretty; }
+.pa-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.pa-foot .pill { border: 0; font-family: inherit; cursor: pointer; }
+
+/* ---------- A · 信笺 ---------- */
+.pa-split { display: grid; grid-template-columns: 320px 1fr; gap: 48px; align-items: start; }
+.pa-side { position: sticky; top: 96px; display: grid; gap: 14px; }
+.pa-index { display: grid; gap: 2px; }
+/* 搜索框：与导航同款的白色胶囊，聚焦时黑色描边 */
+.pa-search {
+  display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 8px 0 16px; border-radius: 999px;
+  background: var(--surface); color: var(--muted); box-shadow: 0 0 0 1px var(--line-soft);
+  transition: box-shadow 100ms ease-out; cursor: text;
+}
+.pa-search:hover { box-shadow: 0 0 0 1px var(--line-active); }
+.pa-search:focus-within { box-shadow: 0 0 0 2px var(--ink); color: var(--ink); }
+.pa-search svg { flex: none; }
+.pa-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: 400 15px/1 var(--sans); color: var(--ink); }
+.pa-search input::placeholder { color: var(--subtle); }
+.pa-search input::-webkit-search-cancel-button { display: none; }
+.pa-search kbd { display: grid; place-items: center; min-width: 26px; height: 26px; border-radius: 8px; background: var(--paper); color: var(--muted); font: 400 12px/1 var(--mono); box-shadow: 0 0 0 1px var(--line-soft); }
+.pa-clear { width: 30px; height: 30px; border: 0; border-radius: 999px; background: var(--paper); color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer; }
+.pa-clear:hover { background: var(--line-soft); }
+.pa-index mark { background: rgba(0, 170, 255, 0.18); color: inherit; border-radius: 3px; }
+.pa-keys { padding: 0 12px; color: var(--subtle); font: 400 12px/1 var(--mono); }
+.pa-tag { border: 0; cursor: pointer; }
+.pa-tag:hover { background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--line-active); }
+.pa-empty { display: grid; gap: 18px; justify-items: start; padding: 56px; border-radius: var(--radius-card); box-shadow: inset 0 0 0 1px var(--line-soft); }
+.pa-index button {
+  display: grid; grid-template-columns: 34px 1fr auto; align-items: baseline; gap: 8px; width: 100%;
+  padding: 12px 12px; border: 0; border-radius: 10px; background: none; text-align: left;
+  font: inherit; color: var(--slate); cursor: pointer; transition: background-color 100ms ease-out;
+}
+.pa-index button:hover { background: var(--line-faded); }
+.pa-index button[aria-current="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--line-soft); }
+.pa-no { color: var(--subtle); font: 400 12px/1 var(--mono); font-variant-numeric: tabular-nums; }
+.pa-t { font-weight: 500; font-size: 16px; }
+.pa-tags { font: italic 500 14px/1 var(--tag); color: var(--muted); font-synthesis-style: none; }
+.pa-letter {
+  position: relative; display: grid; gap: 22px; padding: 56px 56px 44px;
+  border-radius: var(--radius-card); background: var(--surface); box-shadow: 0 0 0 1px var(--line-soft), 0 20px 40px rgba(46, 51, 66, 0.06);
+  animation: fade-up 500ms var(--ease-out-expo) both;
+}
+.pa-stamp { position: absolute; top: 28px; right: 28px; width: 76px; height: 92px; padding: 6px; background: #fff; rotate: 4deg;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+  mask: radial-gradient(circle, transparent 2.6px, #000 3.1px) -4px -4px / 8px 8px, linear-gradient(#000, #000) center / calc(100% - 8px) calc(100% - 8px) no-repeat;
+}
+.pa-stamp-sky { width: 100%; height: 100%; image-rendering: pixelated; }
+.pa-meta { color: var(--subtle); font: 400 12px/1 var(--mono); letter-spacing: 0.04em; }
+.pa-h { font: italic 400 clamp(40px, 4vw + 10px, 72px)/0.95 var(--display); max-width: 10em; padding-right: 90px; }
+
+/* ---------- B · 集邮册 ---------- */
+.pb-head { display: grid; gap: 18px; margin-bottom: 40px; }
+.pb-title { font: 500 var(--type-title)/0.9 var(--sans); letter-spacing: -0.03em; }
+.pb-title em { font: italic 400 1.12em/0.9 var(--display); letter-spacing: -0.01em; }
+.pb-lead { max-width: 30em; color: var(--muted); font-size: 18px; line-height: 1.5; }
+.pb-album {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 64px 40px; justify-items: center;
+  margin-top: 48px; padding: 56px 40px; border-radius: var(--radius-card);
+  background: #efeff3 radial-gradient(circle, rgba(0, 0, 0, 0.05) 1px, transparent 1.5px) 0 0 / 18px 18px;
+}
+.pb-album > li { transition: opacity 300ms ease-out, filter 300ms ease-out; }
+.pb-album > li.is-dim { opacity: 0.18; filter: grayscale(1); }
+.pb-stamp { --w: 250px; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; }
+.pb-veil {
+  position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 24px;
+  background: rgba(13, 15, 20, 0.36); backdrop-filter: blur(6px);
+  animation: pb-fade 200ms ease-out both;
+}
+.pb-envelope {
+  position: relative; display: grid; gap: 20px; width: min(760px, 100%); max-height: 86vh; overflow: auto;
+  padding: 40px 44px; border-radius: var(--radius-card); background: var(--surface);
+  /* 信封上沿的航空邮件斜纹 */
+  background-image: repeating-linear-gradient(-45deg, #00aaff 0 14px, #fff 14px 28px, #ff3fa4 28px 42px, #fff 42px 56px);
+  background-size: 100% 8px; background-repeat: no-repeat;
+  animation: pb-rise 420ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+.pb-env-top { display: flex; align-items: center; justify-content: space-between; }
+.pb-env-h { font: 500 40px/1.05 var(--sans); letter-spacing: -0.02em; }
+.pb-close { width: 36px; height: 36px; border: 0; border-radius: 999px; background: var(--paper); font-size: 20px; cursor: pointer; }
+@keyframes pb-fade { from { opacity: 0; } }
+@keyframes pb-rise { from { transform: translateY(40px) scale(0.96); opacity: 0; } }
+
+/* ---------- C · 调配台 ---------- */
+.pc-head { display: grid; justify-items: center; gap: 16px; margin: 20px 0 48px; }
+.pc-mark { width: 56px; height: 56px; }
+.pc-search {
+  display: flex; align-items: center; gap: 12px; width: min(720px, 100%); height: 68px; padding: 0 14px 0 28px; border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--line-soft), 0 10px 30px rgba(95, 122, 143, 0.18);
+}
+.pc-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font: 400 24px/1 var(--sans); color: var(--ink); }
+.pc-search kbd { padding: 6px 10px; border-radius: 8px; background: var(--paper); color: var(--muted); font: 400 13px/1 var(--mono); box-shadow: 0 0 0 1px var(--line-soft); }
+.pc-hint { color: var(--subtle); font: 400 12px/1 var(--mono); letter-spacing: 0.04em; }
+.pc-desk { display: grid; grid-template-columns: minmax(280px, 400px) 1fr; gap: 32px; align-items: start; }
+.pc-list { display: grid; gap: 4px; }
+.pc-list li { display: grid; gap: 4px; padding: 14px 16px; border-radius: 12px; cursor: pointer; transition: background-color 100ms ease-out; }
+.pc-list li:hover { background: var(--line-faded); }
+.pc-list li[aria-selected="true"] { background: var(--ink); color: #fff; }
+.pc-list li[aria-selected="true"] .pc-why, .pc-list li[aria-selected="true"] .pc-n { color: rgba(255, 255, 255, 0.66); }
+.pc-t { font-weight: 500; font-size: 16px; }
+.pc-why { color: var(--muted); font-size: 13px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.pc-n { color: var(--subtle); font: 400 11px/1 var(--mono); }
+.pc-empty { color: var(--muted); cursor: default !important; }
+.pc-bench { position: sticky; top: 96px; display: grid; gap: 16px; }
+.pc-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.pc-fields label { display: grid; gap: 6px; }
+.pc-fields span { color: var(--muted); font: 400 12px/1 var(--mono); }
+.pc-fields input {
+  height: 42px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line-soft); font: 400 15px/1 var(--sans);
+}
+.pc-fields input:focus { outline: none; box-shadow: 0 0 0 2px var(--ink); }
+.pc-out { border-radius: 16px; background: #0d0f14; color: #e8eaf0; overflow: hidden; }
+.pc-out-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 12px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); font: 400 12px/1 var(--mono); color: rgba(232, 234, 240, 0.6); }
+.pc-out-bar button { height: 32px; padding: 0 14px; border: 0; border-radius: 999px; background: #fff; color: #000; font: 500 13px/1 var(--sans); cursor: pointer; }
+.pc-out pre { margin: 0; padding: 22px 24px 28px; font: 400 14px/1.85 var(--mono); white-space: pre-wrap; }
+.pc-out .pv-var { background: rgba(0, 170, 255, 0.2); color: #77ccff; }
+.pc-out .pv-var.is-filled { background: rgba(47, 196, 122, 0.22); color: #a6e9c6; }
+
+@media (max-width: 960px) {
+  .pa-split, .pc-desk { grid-template-columns: 1fr; }
+  .pa-side, .pc-bench { position: static; }
+  .pa-letter { padding: 40px 24px 28px; }
+}
+
+/* A · 原文下方的中文意思、使用提醒和署名 */
+.pa-zh { max-width: 40em; padding-left: 26px; color: var(--muted); font-size: 15px; line-height: 1.75; text-wrap: pretty; }
+.pa-note {
+  justify-self: start; display: flex; gap: 8px; align-items: baseline; max-width: 40em;
+  padding: 10px 14px; border-radius: 10px; background: #fff7e6; color: #a86500; font-size: 14px; line-height: 1.6;
+}
+.pa-note::before { content: "注意"; flex: none; font-weight: 600; }
+.pa-sign { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; font: italic 400 22px/1.2 var(--display); }
+.pa-role { color: var(--muted); font: 400 14px/1 var(--sans); }
+.pa-sign a { display: inline-flex; align-items: center; gap: 4px; margin-left: auto; color: var(--slate); font: 400 14px/1 var(--sans); text-decoration: none; }
+.pa-sign a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.pa-sign a:hover .nudge { animation: nudge 400ms var(--ease-out-quint) both; }
