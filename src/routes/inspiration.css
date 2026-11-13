@@ -41,3 +41,4 @@
   .insp-sec { grid-template-columns: 1fr; }
   .insp-sec > :not(.insp-h) { grid-column: 1; }
 }
+.insp-link .shelf-domain { max-width: 100%; overflow-wrap: anywhere; }
