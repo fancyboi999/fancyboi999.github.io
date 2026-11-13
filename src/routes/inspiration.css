@@ -50,7 +50,9 @@
   border-radius: var(--radius); background: var(--surface); box-shadow: 0 0 0 1px var(--line-soft);
 }
 .insp-link .insp-frame { margin-top: 10px; }
-.insp-frame iframe { width: 1440px; height: 900px; border: 0; transform: scale(var(--s, 0.6)); transform-origin: 0 0; }
+/* 对方页面加载完会盖住这行字 */
+.insp-frame::before { content: "加载中…"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--subtle); font: 400 13px/1 var(--mono); }
+.insp-frame iframe { position: relative; width: 1440px; height: 900px; border: 0; transform: scale(var(--s, 0.6)); transform-origin: 0 0; }
 .insp-hero a.shelf-domain { text-decoration: none; }
 .insp-hero a.shelf-domain:hover { color: var(--ink); }
 .insp-link-title svg { color: var(--subtle); }
