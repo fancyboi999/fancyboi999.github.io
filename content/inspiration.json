@@ -1,6 +1,50 @@
 {
   "items": [
     {
+      "id": "creation-of-adam",
+      "name": "创造亚当之手",
+      "aka": ["Creation of Adam motif", "Visual metaphor", "ASCII / dither art", "Particle assembly"],
+      "date": "2026-11-13",
+      "tags": ["视觉", "动效"],
+      "source": { "title": "小云雀 · 页脚", "url": "https://www.xiaoyunque.com/" },
+      "summary": "借米开朗基罗《创造亚当》里两只将触未触的手，用点阵或字符重画，指尖之间的空隙放自己的品牌或产品。",
+      "principle": "AI 和创作工具要表达“人和机器一起创造”，这个概念抽象，直接写字没有分量。《创造亚当》的两只手几乎人人认得，而且画的正是“赋予生命的一瞬”，借过来就不用解释。两根指尖之间那道空隙是整幅画的焦点，谁放进空隙，谁就成了那一下“点化”。再用点阵或字符重画，古典名画就带上了“被计算出来”的质感，正好对上 AI 产品。",
+      "parts": [
+        {
+          "name": "只留双手",
+          "how": "原画是一整面天顶壁画，这里只截两只手和指尖之间的空隙。构图是现成的公共记忆，只看手就能认出，原画也早已进入公有领域。"
+        },
+        {
+          "name": "空隙即插槽",
+          "how": "指尖之间的留白是视线终点，把品牌放进去：小云雀在空隙里放点阵 logo；Nuphos 把双手画成插画，前面叠产品界面，图注写“The creation of a pull request”。"
+        },
+        {
+          "name": "点阵或字符重画",
+          "how": "用半调点阵、抖动或 ASCII 字符重新渲染，单色、像素级，读起来是“机器画出来的”。深色底上只用一种亮色，和页脚、终端、开机画面都搭。"
+        },
+        {
+          "name": "粒子聚合入场",
+          "how": "小云雀的点先散开，进入视口后聚成双手和 logo，把“创造”这个动作演出来。实现上是每个点从随机位置插值到图像采样得到的目标位置。"
+        }
+      ],
+      "recipe": "在 21st 的 ASCII 编辑器里套“创造亚当”配方，把原画转成点阵或字符，导出循环视频或组件；指尖空隙里放自己的 logo。要做聚合动画，就从图片采样出点的目标坐标，入场时让点从随机位置移过去。",
+      "similar": [
+        { "title": "Nuphos", "url": "https://nuphos.ai/", "embed": true, "kind": "插画", "note": "首屏是插画版双手，前面叠产品界面，图注“FIG. 01 — The creation of a pull request”。" },
+        { "title": "Hoome · ASCII 壁纸", "url": "https://hoome.dev/en/themes/ascii/", "kind": "字符画", "note": "整幅壁画和双手特写做成琥珀色或灰色字符画，当浏览器新标签页背景，有动画版。" },
+        { "title": "Dirga · Creation of Adam GRUB", "url": "https://dirga.dev/projects/creation-of-adam", "embed": true, "kind": "字符画", "note": "用 ASCII 双手做 Linux GRUB 开机画面，MIT 协议。" },
+        { "title": "modern.css · 3D Creation of Adam", "url": "https://modern-css.com/atlas/showcase/creation-of-adam-3d/", "kind": "CSS 3D", "note": "两只手全用 CSS 搭成，可以旋转着看。" }
+      ],
+      "kits": [
+        { "title": "21st · ASCII 编辑器", "url": "https://21st.dev/community/ascii/editor", "embed": true, "note": "任意图片转成字符、像素或点阵，可调样式，导出动画。" },
+        { "title": "21st · Creation of Adam 配方", "url": "https://21st.dev/community/ascii/creation-of-adam-04c6844d-b7ae-4308-ada5-85ef227c2376", "embed": true, "note": "编辑器里现成的创造亚当配方，可以直接在编辑器里打开再改。" },
+        { "title": "21st · the creation of adam 组件", "url": "https://21st.dev/@fuererayt/components/the-creation-of-adam", "embed": true, "note": "点阵脉冲风格的双手，烘焙成循环视频的 React 组件，零依赖，适合头图和卡片背景。" },
+        { "title": "Originkit · Two Reaching Hands", "url": "https://www.originkit.dev/components/two-reaching-hands", "embed": true, "note": "黑底字符画出两只手，可调字符颜色、列数、入场时长和速度。" },
+        { "title": "Knot UI · Hand Toggle", "url": "https://shadcnregistry.com/knot-ui/hand-toggle", "embed": true, "note": "抖动点阵的“上帝之手”深浅色开关，带圆形 view transition 揭开，shadcn 一行命令安装。" },
+        { "title": "ascii-images · Creation of Adam", "url": "https://ascii-images.com/examples/images/creation-of-adam", "note": "把壁画转成可复制的 ASCII 文本，有几种字符风格。" }
+      ],
+      "search": ["creation of adam ascii", "dither hands hero", "halftone particle image animation", "image to ascii art", "particles assemble into image"]
+    },
+    {
       "id": "interactive-sentence",
       "name": "交互式句子",
       "aka": ["Interactive sentence", "Mad Libs headline", "Rotating words", "Text morph"],
