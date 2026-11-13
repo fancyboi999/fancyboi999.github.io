@@ -25,13 +25,34 @@
 
 .insp-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
 .insp-link {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px 18px; border-radius: var(--radius);
-  background: var(--surface); box-shadow: 0 0 0 1px var(--line-soft); color: var(--ink); text-decoration: none;
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px 18px; border-radius: var(--radius);
+  background: var(--surface); box-shadow: 0 0 0 1px var(--line-soft); color: var(--ink);
   transition: box-shadow 100ms ease-out;
 }
 .insp-link:hover { box-shadow: 0 0 0 1px var(--line-active); }
-.insp-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.insp-link-title { display: flex; align-items: center; gap: 6px; font-weight: 500; }
+.insp-link.is-open { grid-column: 1 / -1; }
+/* 整张卡片可点：标题链接的 ::after 铺满卡片，预览按钮和 iframe 叠在它上面 */
+.insp-link-title { display: flex; align-items: center; gap: 6px; font-weight: 500; color: inherit; text-decoration: none; }
+.insp-link-title::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.insp-link-title:focus-visible { outline: none; }
+.insp-link:has(.insp-link-title:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }
+.insp-link-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; }
+.insp-peek {
+  position: relative; z-index: 1; flex: none; height: 28px; padding: 0 12px; border: 0; border-radius: 999px;
+  background: var(--paper); color: var(--ink); font: 500 13px/1 var(--sans); cursor: pointer;
+  box-shadow: 0 0 0 1px var(--line-soft); transition: background-color 100ms ease-out;
+}
+.insp-peek:hover { background: var(--line-soft); }
+.insp-peek[aria-expanded="true"] { background: var(--ink); color: #fff; }
+
+.insp-frame {
+  position: relative; z-index: 1; display: block; width: 100%; aspect-ratio: 1440 / 900; overflow: hidden;
+  border-radius: var(--radius); background: var(--surface); box-shadow: 0 0 0 1px var(--line-soft);
+}
+.insp-link .insp-frame { margin-top: 10px; }
+.insp-frame iframe { width: 1440px; height: 900px; border: 0; transform: scale(var(--s, 0.6)); transform-origin: 0 0; }
+.insp-hero a.shelf-domain { text-decoration: none; }
+.insp-hero a.shelf-domain:hover { color: var(--ink); }
 .insp-link-title svg { color: var(--subtle); }
 .insp-link-note { color: var(--muted); font-size: 14px; line-height: 1.6; text-wrap: pretty; }
 .insp-kind { padding: 0 8px; font-size: 13px; }

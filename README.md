@@ -20,6 +20,7 @@
 - `parts`：拆成几个独立的招（`name`、`how`）；`recipe`：最省事的做法
 - `similar`：同类设计（`title`、`url`、`kind` 变体、`note`）；`kits`：能直接用的库或教程（`title`、`url`、`note`）
 - `search`：以后找同类时用的关键词
+- 允许 iframe 嵌入的链接加 `"embed": true`：原始设计显示可交互的实时页面，同类设计和库的卡片多一个「预览」按钮。加之前先确认对方没有 `X-Frame-Options` 或限制 `frame-ancestors`，并在浏览器里看一眼没有跳出；不能嵌入的保持截图
 
 列表页是 `/inspiration/`，详情页是 `/inspiration/<id>/`，按 `date` 从新到旧排列，`tags` 自动生成筛选。
 

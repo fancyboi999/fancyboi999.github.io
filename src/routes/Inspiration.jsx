@@ -1,5 +1,5 @@
 // 灵感：列表页是模式卡片墙（筛选和卡片沿用 /stack/ 分类视图的样式），详情页是一个模式的完整拆解。
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router";
 import { inspirations, inspirationById, inspirationTags } from "../inspiration.js";
 import { Arrow, Footer } from "../components/Layout.jsx";
@@ -43,14 +43,40 @@ export function InspirationIndex() {
   );
 }
 
-const External = ({ item }) => (
-  <a className="insp-link" href={item.url} target="_blank" rel="noopener">
-    <span className="insp-link-title">{item.title}<Arrow /></span>
-    {item.kind ? <span className="chip insp-kind">{item.kind}</span> : null}
-    <span className="insp-link-note">{item.note}</span>
-    <span className="shelf-domain">{item.domain}</span>
-  </a>
-);
+// 实时预览：按 1440×900 的桌面视口渲染对方网站，再整体缩放到容器宽度。
+// 只给 JSON 里标了 embed 的网站用（对方允许被 iframe 嵌入，且实测不会跳出）；
+// sandbox 不给 allow-top-navigation，对方脚本无法把整页带走。
+const FRAME_W = 1440;
+function LiveFrame({ url, title }) {
+  const box = useRef(null);
+  useEffect(() => {
+    const el = box.current;
+    const ro = new ResizeObserver(() => el.style.setProperty("--s", el.clientWidth / FRAME_W));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <span className="insp-frame" ref={box}>
+      <iframe src={url} title={`${title} 实时预览`} loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" referrerPolicy="no-referrer" />
+    </span>
+  );
+}
+
+function External({ item }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={`insp-link${open ? " is-open" : ""}`}>
+      <a className="insp-link-title" href={item.url} target="_blank" rel="noopener">{item.title}<Arrow /></a>
+      {item.kind ? <span className="chip insp-kind">{item.kind}</span> : null}
+      <span className="insp-link-note">{item.note}</span>
+      <span className="insp-link-foot">
+        <span className="shelf-domain">{item.domain}</span>
+        {item.embed ? <button type="button" className="insp-peek" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "收起" : "预览"}</button> : null}
+      </span>
+      {open ? <LiveFrame url={item.url} title={item.title} /> : null}
+    </div>
+  );
+}
 
 export function InspirationDetail() {
   const { id } = useParams();
@@ -65,12 +91,19 @@ export function InspirationDetail() {
         <p className="shelf-lead">{item.summary}</p>
       </header>
 
-      <a className="lift insp-hero" href={item.source.url} target="_blank" rel="noopener">
-        <span className="lift-card shelf-media insp-media">
-          <img src={item.image} alt={`${item.source.title} 首屏截图`} decoding="async" width="800" height="500" />
-        </span>
-        <span className="shelf-domain">原始设计 · {item.source.title} · {item.source.domain}</span>
-      </a>
+      {item.source.embed ? (
+        <div className="insp-hero">
+          <LiveFrame url={item.source.url} title={item.source.title} />
+          <a className="shelf-domain" href={item.source.url} target="_blank" rel="noopener">原始设计 · {item.source.title} · {item.source.domain} ↗</a>
+        </div>
+      ) : (
+        <a className="lift insp-hero" href={item.source.url} target="_blank" rel="noopener">
+          <span className="lift-card shelf-media insp-media">
+            <img src={item.image} alt={`${item.source.title} 首屏截图`} decoding="async" width="800" height="500" />
+          </span>
+          <span className="shelf-domain">原始设计 · {item.source.title} · {item.source.domain}</span>
+        </a>
+      )}
 
       <section className="insp-sec" aria-labelledby="insp-why">
         <h2 className="insp-h" id="insp-why">为什么成立</h2>
