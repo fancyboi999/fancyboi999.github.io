@@ -477,6 +477,7 @@ a.chip-on-blue:hover b { color: var(--ink); }
 .shelf-name svg { color: var(--subtle); }
 .shelf-note { color: var(--muted); font-size: 14px; }
 .shelf-domain { color: var(--subtle); font: 400 12px/1.4 var(--mono); }
+.shelf-card .insp-media { aspect-ratio: 800 / 500; }
 
 @media (max-width: 640px) {
   .wall-tile { width: 300px; }

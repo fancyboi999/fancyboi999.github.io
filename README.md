@@ -10,6 +10,10 @@
 
 在 `content/stack.json` 的 `items` 里加一项（`id`、`name`、`url`、`category`、`note`），再把官网首屏截图存成 `public/stack/<id>.webp`（800×516）。`categories` 决定分组和筛选。
 
+## 加灵感（/inspiration/）
+
+在 `content/inspiration.json` 的 `items` 里加一项（`id`、`title`、`url`、`date`、`tags`、`note`），`note` 写想借鉴什么。截图用 1440×900 视口，缩成 800×500 存为 `public/inspiration/<id>.webp`。页面按 `date` 从新到旧排列，`tags` 自动生成筛选。
+
 ## 命令
 
 ```bash

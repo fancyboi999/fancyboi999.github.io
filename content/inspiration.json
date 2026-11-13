@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "id": "andreas-vision-play",
+      "title": "Andreas · Play",
+      "url": "https://andreas.vision/play",
+      "date": "2026-10-21",
+      "tags": ["布局", "交互"],
+      "note": "一整屏可拖拽的无限卡片墙，奇数列错落。/stack/ 的画布视图照着它做。"
+    },
+    {
+      "id": "designeer",
+      "title": "Designeer",
+      "url": "https://designeer.xyz",
+      "date": "2026-10-21",
+      "tags": ["布局"],
+      "note": "顶部一排分类胶囊筛选，下面是截图卡片网格。/stack/ 的分类视图照着它做。"
+    },
+    {
+      "id": "andreas-vision",
+      "title": "Andreas Vision",
+      "url": "https://andreas.vision",
+      "date": "2026-10-21",
+      "tags": ["排版", "视觉"],
+      "note": "像素天空衬着斜体衬线大标题，加上玻璃胶囊导航和黑色箭头按钮。本站改版时的整体参照。"
+    }
+  ]
+}
