@@ -1,6 +1,7 @@
 // 每个路由的标题与描述：预渲染写进 <head>，客户端换页时同步 document.title
 import { site } from "./site.js";
 import { postBySlug, tags, categories, termSlug } from "./content.js";
+import { inspirationById } from "./inspiration.js";
 
 export function pageMeta(url) {
   let title = `${site.title} · ${site.motto}`;
@@ -28,6 +29,15 @@ export function pageMeta(url) {
   else if (url === "/prompts/") {
     title = `Prompts · ${site.title}`;
     description = "fancy 收藏的 prompt：在 AI 编程与日常工作中经过验证的提示词，附出处、原文与使用注意。";
+  }
+  else if (url === "/inspiration/") {
+    title = `Inspiration · ${site.title}`;
+    description = "fancy 收集的设计模式：每种附上名字、为什么成立、拆解、同类网站和能直接用的库。";
+  }
+  else if (url.match(/^\/inspiration\/([^/]+)\/$/) && inspirationById[url.split("/")[2]]) {
+    const i = inspirationById[url.split("/")[2]];
+    title = `${i.name} · ${i.aka[0]} · ${site.title}`;
+    description = i.summary;
   }
   else if (url === "/404.html") title = `404 · ${site.title}`;
   return { title, description, type };

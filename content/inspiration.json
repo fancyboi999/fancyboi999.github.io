@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "id": "interactive-sentence",
+      "name": "交互式句子",
+      "aka": ["Interactive sentence", "Mad Libs headline", "Rotating words", "Text morph"],
+      "date": "2026-11-12",
+      "tags": ["排版", "交互", "动效"],
+      "source": { "title": "Graphical", "url": "https://www.graphicalui.com/", "embed": true },
+      "summary": "首屏标题是一句完整的话，几个关键词做成带图标的按钮，点一下换成同类的另一个词。",
+      "principle": "首屏要用一句话说清产品做什么，可产品覆盖面很广：列清单太长，只说一个又太窄。把句子拆成固定的骨架和可替换的槽位：骨架让人一眼读懂，槽位里的候选词展示广度。让读者自己点着换，看介绍就变成了试一下。",
+      "parts": [
+        {
+          "name": "句子骨架 + 槽位",
+          "how": "整句是固定文字，三个关键词是槽位，每个槽位有一组同类候选词：languages / themes / systems，type / colors / spacing / motion…，Grok / ChatGPT / Claude / Cursor / anything。最后一个候选是兜底词 anything，暗示不止这些。"
+        },
+        {
+          "name": "行内按钮",
+          "how": "槽位是真正的 <button>：浅灰胶囊底，左边一个倾斜的彩色小图标，像贴在句子里的贴纸。aria-label 写当前词和下一个词（“languages. Show themes”），读屏也能用。"
+        },
+        {
+          "name": "逐字母变形",
+          "how": "换词用 Torph：把词拆成字母，新旧两个词共有的字母移到新位置，其余字母淡入淡出。图标层同时换图，并转到一个新角度。"
+        },
+        {
+          "name": "预先量宽度",
+          "how": "按钮里藏一组看不见的 span，把所有候选词都渲染一遍量出宽度。换词时按钮宽度设为新词的宽度并加过渡，后面的文字平滑让位，整句不会跳。"
+        }
+      ],
+      "recipe": "用 Torph 的 <TextMorph> 包住当前词，外面套一个 <button>，点击时切到下一个候选词；用隐藏的 span 量出每个候选词的宽度，给按钮的 width 加 transition。想要自动轮换，就把点击换成定时器。",
+      "similar": [
+        { "title": "Los Feliz Engineering", "url": "https://lfe.org/", "embed": true, "kind": "点词展开", "note": "整页是一段话，带图标的词都是按钮，点了展开对应内容。公司已被收购，网站只作存档。" },
+        { "title": "Codrops 自然语言表单", "url": "https://tympanus.net/Tutorials/NaturalLanguageForm/", "kind": "点词填空", "note": "句子本身就是表单：“I feel like eating any food in a standard restaurant…”，里面的选项点开就能换。" },
+        { "title": "Pedro Duarte", "url": "https://ped.ro/", "embed": true, "kind": "关键词胶囊", "note": "自我介绍随滚动一句句亮起，关键词套着胶囊框。只做强调，点了不会变。" },
+        { "title": "Notion", "url": "https://www.notion.com/", "kind": "关键词胶囊", "note": "标题里的 Think 放在彩色小标签里，标签里也藏着一个量宽度用的 span，和 Graphical 同一招。" },
+        { "title": "Hootsuite", "url": "https://www.hootsuite.com/", "kind": "自动轮换", "note": "“Social can be chaotic.”句尾的词轮流换成 complicated、risky、sloppy、noisy。" },
+        { "title": "Gong", "url": "https://www.gong.io/", "kind": "自动轮换", "note": "“Revenue AI built to…”后面轮流换成不同的业务成果。" },
+        { "title": "Profound", "url": "https://www.tryprofound.com/", "kind": "自动轮换", "note": "句尾轮流换成 ChatGPT、Perplexity、Claude、Gemini 等 AI 产品名。" }
+      ],
+      "kits": [
+        { "title": "Torph", "url": "https://torph.lochie.me/", "embed": true, "note": "Graphical 用的就是它。逐字母变形，无依赖，有 React、Vue、Svelte 和原生 JS 版本，MIT 协议。" },
+        { "title": "Fancy Components · Text Rotate", "url": "https://www.fancycomponents.dev/docs/components/text/text-rotate", "embed": true, "note": "设 auto={false}，再通过 ref 调 next()，就是点一下换一个。" },
+        { "title": "Magic UI · Word Rotate", "url": "https://magicui.design/docs/components/word-rotate", "embed": true, "note": "标题里自动轮换单词，接入最快。" },
+        { "title": "React Bits · Rotating Text", "url": "https://reactbits.dev/text-animations/rotating-text", "embed": true, "note": "换词时带 3D 翻转。" },
+        { "title": "Aceternity · Flip Words", "url": "https://ui.aceternity.com/components/flip-words", "embed": true, "note": "句子里的词翻转着切换。" },
+        { "title": "CodePen · Rotating word in heading", "url": "https://codepen.io/reknih/pen/LYdypOg", "note": "纯 JS 实现，换词时宽度平滑变化，适合看原理。" },
+        { "title": "Benji · Family Values", "url": "https://benji.org/family-values", "embed": true, "note": "Torph 的方法出自这篇文章：新旧文字中共有的字母移动，其余的淡入淡出。" }
+      ],
+      "search": ["interactive sentence hero", "mad libs headline", "rotating words headline", "text morph animation", "natural language form"]
+    }
+  ]
+}
