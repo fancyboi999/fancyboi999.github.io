@@ -1,0 +1,43 @@
+/* /inspiration/ 列表页的补充与详情页 */
+
+.shelf-card .insp-media { aspect-ratio: 800 / 500; }
+.insp-aka { color: var(--subtle); font: 400 12px/1 var(--mono); letter-spacing: 0.02em; }
+
+.insp { padding-bottom: 80px; }
+.insp .page-title { font-size: clamp(44px, 5vw + 8px, 88px); }
+.insp .kicker a { color: inherit; }
+.insp .kicker a:hover { color: var(--ink); }
+
+.insp-hero { display: grid; gap: 10px; max-width: 880px; margin-bottom: 96px; color: var(--ink); text-decoration: none; }
+
+.insp-sec { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px 48px; padding: 40px 0; box-shadow: 0 -1px 0 var(--line-soft); }
+.insp-h { font: 500 21px/1.3 var(--sans); }
+.insp-sec > :not(.insp-h) { grid-column: 2; }
+.insp-principle { max-width: 36em; font-size: 20px; line-height: 1.6; text-wrap: pretty; }
+
+.insp-parts { display: grid; gap: 24px; counter-reset: part; }
+.insp-parts li { display: grid; grid-template-columns: 40px 1fr; gap: 4px 0; counter-increment: part; }
+.insp-parts li::before { content: counter(part, decimal-leading-zero); grid-row: span 2; color: var(--subtle); font: 400 13px/1.7 var(--mono); }
+.insp-parts h3 { font: 500 17px/1.5 var(--sans); }
+.insp-parts p { max-width: 40em; color: var(--muted); font-size: 16px; line-height: 1.75; text-wrap: pretty; }
+.insp-recipe { display: grid; gap: 6px; max-width: 40em; padding: 18px 22px; border-radius: var(--radius); background: var(--surface); box-shadow: 0 0 0 1px var(--line-soft); font-size: 16px; line-height: 1.75; }
+.insp-recipe b { font-weight: 500; }
+
+.insp-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.insp-link {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px 18px; border-radius: var(--radius);
+  background: var(--surface); box-shadow: 0 0 0 1px var(--line-soft); color: var(--ink); text-decoration: none;
+  transition: box-shadow 100ms ease-out;
+}
+.insp-link:hover { box-shadow: 0 0 0 1px var(--line-active); }
+.insp-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.insp-link-title { display: flex; align-items: center; gap: 6px; font-weight: 500; }
+.insp-link-title svg { color: var(--subtle); }
+.insp-link-note { color: var(--muted); font-size: 14px; line-height: 1.6; text-wrap: pretty; }
+.insp-kind { padding: 0 8px; font-size: 13px; }
+.insp-q { padding: 4px 10px; border-radius: 10px; background: var(--surface); box-shadow: 0 0 0 1px var(--line-soft); font: 400 13px/1.4 var(--mono); user-select: all; }
+
+@media (max-width: 960px) {
+  .insp-sec { grid-template-columns: 1fr; }
+  .insp-sec > :not(.insp-h) { grid-column: 1; }
+}

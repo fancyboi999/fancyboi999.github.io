@@ -7,7 +7,7 @@ import About from "./routes/About.jsx";
 import NotFound from "./routes/NotFound.jsx";
 import Stack from "./routes/Stack.jsx";
 import Prompts from "./routes/Prompts.jsx";
-import Inspiration from "./routes/Inspiration.jsx";
+import { InspirationIndex, InspirationDetail } from "./routes/Inspiration.jsx";
 import { Archives, TermIndex, TermPage } from "./routes/Lists.jsx";
 
 import "@fontsource-variable/geist";
@@ -33,7 +33,8 @@ function Page({ location }) {
         <Route path="categories/:term" element={<TermPage kind="categories" />} />
         <Route path="stack" element={<Stack />} />
         <Route path="prompts" element={<Prompts />} />
-        <Route path="inspiration" element={<Inspiration />} />
+        <Route path="inspiration" element={<InspirationIndex />} />
+        <Route path="inspiration/:id" element={<InspirationDetail />} />
         <Route path="about" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Route>

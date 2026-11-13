@@ -12,7 +12,16 @@
 
 ## 加灵感（/inspiration/）
 
-在 `content/inspiration.json` 的 `items` 里加一项（`id`、`title`、`url`、`date`、`tags`、`note`），`note` 写想借鉴什么。截图用 1440×900 视口，缩成 800×500 存为 `public/inspiration/<id>.webp`。页面按 `date` 从新到旧排列，`tags` 自动生成筛选。
+每条是一种设计模式，在 `content/inspiration.json` 的 `items` 里加一项：
+
+- `id`、`name`（中文名）、`aka`（英文叫法和搜索用词，第一个显示在卡片上）、`date`、`tags`、`summary`（一句话说清是什么）
+- `source`：原始设计（`title`、`url`）；截图用 1440×900 视口，缩成 800×500 存为 `public/inspiration/<id>.webp`
+- `principle`：为什么成立，从它要解决的问题讲起
+- `parts`：拆成几个独立的招（`name`、`how`）；`recipe`：最省事的做法
+- `similar`：同类设计（`title`、`url`、`kind` 变体、`note`）；`kits`：能直接用的库或教程（`title`、`url`、`note`）
+- `search`：以后找同类时用的关键词
+
+列表页是 `/inspiration/`，详情页是 `/inspiration/<id>/`，按 `date` 从新到旧排列，`tags` 自动生成筛选。
 
 ## 命令
 

@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import { site } from "./site.js";
 import { posts, tags, categories, loadBody } from "./content.js";
 import { pageMeta } from "./meta.js";
+import { inspirations } from "./inspiration.js";
 
 // renderToString 是同步的，先把所有正文装进缓存
 await Promise.all(posts.map((p) => loadBody(p.slug)));
@@ -30,6 +31,7 @@ export function routes() {
     "/stack/",
     "/prompts/",
     "/inspiration/",
+    ...inspirations.map((i) => `/inspiration/${i.id}/`),
     ...posts.map((p) => `/posts/${p.slug}/`),
     ...tags.map((t) => `/tags/${t.slug}/`),
     ...categories.map((c) => `/categories/${c.slug}/`),
