@@ -46,34 +46,46 @@
     },
     {
       "id": "interactive-sentence",
-      "name": "交互式句子",
-      "aka": ["Interactive sentence", "Mad Libs headline", "Rotating words", "Text morph"],
+      "name": "句子即界面",
+      "aka": ["Sentence as interface", "交互式句子", "Interactive sentence", "Inline hover reveal", "Mad Libs headline"],
       "date": "2026-11-12",
       "tags": ["排版", "交互", "动效"],
       "source": { "title": "Graphical", "url": "https://www.graphicalui.com/", "embed": true },
-      "summary": "首屏标题是一句完整的话，几个关键词做成带图标的按钮，点一下换成同类的另一个词。",
-      "principle": "首屏要用一句话说清产品做什么，可产品覆盖面很广：列清单太长，只说一个又太窄。把句子拆成固定的骨架和可替换的槽位：骨架让人一眼读懂，槽位里的候选词展示广度。让读者自己点着换，看介绍就变成了试一下。",
+      "summary": "一句话里嵌几个可交互的词：换成同类的另一个词，看这句话能套多广；在词旁展开图片或注释，看这个词有多深。",
+      "principle": "页面想用一句话把事情说清，可这句话要盖住很多对象，正文里有的词也值得配一张图或一句解释。写成清单，或者链到别的页面，人就离开了这句话。把句子拆成固定的骨架和少数几个词，词就是入口，要补充的内容仍然挂在这句话上。换一个词，同一副骨架套上不同的对象，看的是广度；在词旁边展开图片或注释，看的是深度。",
       "parts": [
         {
-          "name": "句子骨架 + 槽位",
-          "how": "整句是固定文字，三个关键词是槽位，每个槽位有一组同类候选词：languages / themes / systems，type / colors / spacing / motion…，Grok / ChatGPT / Claude / Cursor / anything。最后一个候选是兜底词 anything，暗示不止这些。"
+          "name": "句子骨架 + 触发词",
+          "how": "整句是固定的骨架，只挑少数几个词做入口，其余文字不动。换词时，每个入口有一组同类候选：languages / themes / systems，type / colors / spacing / motion…，Grok / ChatGPT / Claude / Cursor / anything，最后一个 anything 是兜底，暗示不止这些。在词旁展开时，正文里挑几个词做触发词，悬停、Tab 聚焦或触屏轻点，就在词旁展开图片或小注，移开收回。"
         },
         {
-          "name": "行内按钮",
-          "how": "槽位是真正的 <button>：浅灰胶囊底，左边一个倾斜的彩色小图标，像贴在句子里的贴纸。aria-label 写当前词和下一个词（“languages. Show themes”），读屏也能用。"
+          "name": "触发词的提示",
+          "how": "换词的入口是真正的 <button>：浅灰胶囊底，左边一个倾斜的彩色小图标，像贴在句子里的贴纸。词旁展开的触发词是 <a class=\"term\" href=\"#卡片id\" aria-describedby=\"卡片id\">，data-trigger 有三种样式。underline 是细下划线，text-decoration-thickness: 0.05em、text-underline-offset: 0.14em，30% 白，悬停变成实色。amber 是琥珀色的字，不画线。dim 比正文暗，悬停再提亮。引导语写“Hover the words that stand out, or tab to them.”，触屏换成“Tap the words that stand out.”。"
         },
         {
-          "name": "逐字母变形",
-          "how": "换词用 Torph：把词拆成字母，新旧两个词共有的字母移到新位置，其余字母淡入淡出。图标层同时换图，并转到一个新角度。"
+          "name": "谁都能打开",
+          "how": "换词按钮的 aria-label 写上当前词和下一个词（“languages. Show themes”），读屏可以直接用。词旁的卡片标成 role=\"tooltip\"，触发词用 aria-describedby 指到卡片，Tab 就能打开；触屏用轻点代替悬停。prefers-reduced-motion: reduce 时，卡片不做动效，平滑滚动也关掉。"
         },
         {
-          "name": "预先量宽度",
-          "how": "按钮里藏一组看不见的 span，把所有候选词都渲染一遍量出宽度。换词时按钮宽度设为新词的宽度并加过渡，后面的文字平滑让位，整句不会跳。"
+          "name": "原地换词",
+          "how": "换词用 Torph：词被拆成字母，新旧两个词共有的字母移到新位置，其余字母淡入淡出；图标同时换掉，并转到一个新的角度。按钮里藏着一组看不见的 span，把每个候选词都渲染一遍，量出宽度。换到新词时，按钮宽度改成新词的宽度并加上过渡，后面的文字平滑让开，整句不会跳。"
+        },
+        {
+          "name": "卡片的定位和开合",
+          "how": "卡片默认居中在词的上方，上方放不下就放到下方，并限制在页边距和本节之内。有的版式把卡片放在段落右侧，对齐触发词所在的那一行，手机上不用这一档。同一时间只打开一张。指针离开后等 0.1 秒才关闭（CLOSE_DELAY = 0.1），从一个词滑到下一个词不会闪一下。按 Escape，或者点在空白处，卡片也会关上。"
+        },
+        {
+          "name": "一套骨架多种外观",
+          "how": "外观写在 data-variation 上，同一套骨架有十六种样子。01 Backdrop：大图从右侧横扫进来，边进边漂移，其余正文暗到 0.4。04 Filmstrip：一条胶片横贯全宽。05 Entry：触发词自己升起来，变成卡片的标题。09 Instant：下划线当作拍立得的出片口。12 Scrub：指针沿着词移动，翻看六帧。16 Focus Pull：从失焦的光斑对上焦。其中有几种用 WebGL。"
         }
       ],
-      "recipe": "用 Torph 的 <TextMorph> 包住当前词，外面套一个 <button>，点击时切到下一个候选词；用隐藏的 span 量出每个候选词的宽度，给按钮的 width 加 transition。想要自动轮换，就把点击换成定时器。",
+      "recipe": "换词时，用 Torph 的 <TextMorph> 包住当前词，外面套一个 <button>，点击切到下一个候选；用隐藏的 span 量出每个候选词的宽度，给按钮的 width 加上 transition。想自动轮换，就把点击换成定时器。词旁展开时，用 Radix 或 shadcn 的 Hover Card，或者 Floating UI 的 useHover，处理定位、延时和安全区，展开动画用 GSAP SplitText。Codrops 仓库里的 hoverCards.js（MIT）把“定位和开合”与“每种外观的 open/close”分开，新增一种外观，只写一对返回 tween 的函数。",
       "similar": [
+        { "title": "Codrops · 行内悬停揭示", "url": "https://tympanus.net/Demos/InlineHoverReveals/", "kind": "词旁展开", "note": "词旁展开的原例。正文挑几个词做触发词，悬停、Tab 聚焦或触屏轻点时在词旁展开图片或小注，移开收回。同一套骨架十六种外观，有几种用 WebGL。发布帖：https://x.com/codrops/status/2120834583755202808" },
         { "title": "Los Feliz Engineering", "url": "https://lfe.org/", "embed": true, "kind": "点词展开", "note": "整页是一段话，带图标的词都是按钮，点了展开对应内容。公司已被收购，网站只作存档。" },
+        { "title": "维基百科 · Page Previews", "url": "https://www.mediawiki.org/wiki/Page_Previews", "kind": "悬停摘要", "note": "悬停站内链接时显示摘要和配图，为的是少开一个标签页。" },
+        { "title": "Gwern.net", "url": "https://gwern.net/", "embed": true, "kind": "悬停注释", "note": "链接悬停弹出注释，注释里的链接还能再弹出一层。" },
+        { "title": "Codrops · 图片揭示悬停", "url": "https://tympanus.net/Development/ImageRevealHover/", "kind": "图片揭示", "note": "2018 年的演示，五种图片揭示的悬停效果。" },
         { "title": "Codrops 自然语言表单", "url": "https://tympanus.net/Tutorials/NaturalLanguageForm/", "kind": "点词填空", "note": "句子本身就是表单：“I feel like eating any food in a standard restaurant…”，里面的选项点开就能换。" },
         { "title": "Pedro Duarte", "url": "https://ped.ro/", "embed": true, "kind": "关键词胶囊", "note": "自我介绍随滚动一句句亮起，关键词套着胶囊框。只做强调，点了不会变。" },
         { "title": "Notion", "url": "https://www.notion.com/", "kind": "关键词胶囊", "note": "标题里的 Think 放在彩色小标签里，标签里也藏着一个量宽度用的 span，和 Graphical 同一招。" },
@@ -88,9 +100,15 @@
         { "title": "React Bits · Rotating Text", "url": "https://reactbits.dev/text-animations/rotating-text", "embed": true, "note": "换词时带 3D 翻转。" },
         { "title": "Aceternity · Flip Words", "url": "https://ui.aceternity.com/components/flip-words", "embed": true, "note": "句子里的词翻转着切换。" },
         { "title": "CodePen · Rotating word in heading", "url": "https://codepen.io/reknih/pen/LYdypOg", "note": "纯 JS 实现，换词时宽度平滑变化，适合看原理。" },
-        { "title": "Benji · Family Values", "url": "https://benji.org/family-values", "embed": true, "note": "Torph 的方法出自这篇文章：新旧文字中共有的字母移动，其余的淡入淡出。" }
+        { "title": "Benji · Family Values", "url": "https://benji.org/family-values", "embed": true, "note": "Torph 的方法出自这篇文章：新旧文字中共有的字母移动，其余的淡入淡出。" },
+        { "title": "Codrops · InlineHoverReveals", "url": "https://github.com/codrops/InlineHoverReveals", "note": "MIT 协议。GSAP 3.15，用到 ScrollTrigger、ScrollSmoother 和 SplitText。hoverCards.js 把定位、开合与每种外观的 open/close 分开，新增外观只写一对返回 tween 的函数。" },
+        { "title": "Radix · Hover Card", "url": "https://www.radix-ui.com/primitives/docs/components/hover-card", "embed": true, "note": "openDelay 默认 700ms，closeDelay 默认 300ms。文档注明键盘用户无法访问卡片内容。" },
+        { "title": "shadcn/ui · Hover Card", "url": "https://ui.shadcn.com/docs/components/hover-card", "embed": true, "note": "Hover Card 组件，用来把图片或注释挂在词旁边。" },
+        { "title": "Floating UI · useHover", "url": "https://floating-ui.com/docs/useHover", "embed": true, "note": "可以设置打开和关闭的 delay，还有 restMs 和 safePolygon()。" },
+        { "title": "Tippy.js", "url": "https://atomiks.github.io/tippyjs/", "embed": true, "note": "悬停弹出提示框的库。" },
+        { "title": "GSAP · SplitText", "url": "https://gsap.com/docs/v3/Plugins/SplitText/", "note": "把文字拆开，用来写卡片展开的动画。" }
       ],
-      "search": ["interactive sentence hero", "mad libs headline", "rotating words headline", "text morph animation", "natural language form"]
+      "search": ["interactive sentence hero", "sentence as interface", "mad libs headline", "rotating words headline", "text morph animation", "natural language form", "inline hover reveal", "hover card tooltip"]
     }
   ]
 }
