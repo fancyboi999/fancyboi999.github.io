@@ -98,7 +98,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 .nav-pill a:hover { background: var(--line-faded); }
 .nav-pill a.active { background: var(--line-soft); }
-.nav-logo { gap: 8px; margin-right: 10px; padding-left: 4px !important; font-weight: 500; }
+.nav-logo { flex: none; gap: 8px; margin-right: 10px; padding-left: 4px !important; font-weight: 500; }
 .nav-logo .sprite { width: 22px; height: 22px; }
 .nav-cta { display: flex; gap: 8px; }
 
@@ -410,7 +410,8 @@ a.chip-on-blue:hover b { color: var(--ink); }
 }
 /* 导航有 6 个链接，窄屏放不下 RSS 圆按钮；页脚仍有 RSS 链接 */
 @media (max-width: 420px) {
-  .nav-pill a { padding: 0 7px; }
+  .nav-pill { gap: 0; font-size: 13px; }
+  .nav-pill a { padding: 0 6px; }
   .nav-cta { display: none; }
 }
 
