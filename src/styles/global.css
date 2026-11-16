@@ -137,13 +137,26 @@ a.chip-on-blue:hover b { color: var(--ink); }
   position: relative; z-index: 1; height: 100%;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
   padding: 96px var(--gutter) 64px; text-align: center;
+  container-type: inline-size;
 }
+/* 字号取 Display 和"最宽一行放得下"两者的较小值。宽屏两行：Engineer who / builds with [胶囊]；
+ * 窄屏三行，胶囊单独一行。--row-em-* 由 Hero 按最长的候选词实测写入，默认值是当前词表的实测结果，避免首帧跳动 */
 .hero-title {
-  font: 400 var(--type-display)/1.08 var(--display);
+  --row-gap: 0.25em;
+  font: 400 min(var(--type-display), 100cqi / var(--row-em-wide, 9.94))/1.08 var(--display);
   font-style: italic;
   letter-spacing: -0.005em;
   max-width: min(11em, 100%);
   text-wrap: balance;
+}
+.hero-title .ws-row { width: max-content; margin-inline: auto; }
+/* 宽屏后两行并排且整句不折行：字号已按最长的词算好，这里兜住舍入误差，宁可贴边也不断成三行 */
+.hero-title .ws-before { white-space: nowrap; }
+.hero-title .ws-before .ws-row:nth-child(n + 2) { display: inline-block; }
+.hero-title .ws-before .ws-row:nth-child(3) { margin-inline-start: var(--row-gap); }
+@container (max-width: 560px) {
+  .hero-title { font-size: min(var(--type-display), 100cqi / var(--row-em-narrow, 5.69)); }
+  .hero-title .ws-before .ws-row:nth-child(n + 2) { display: block; margin-inline: auto; }
 }
 .hero-title .ws-slot .sprite { width: 100%; height: 100%; }
 .hero-title .ws-after { font-style: normal; font-family: var(--sans); font-weight: 500; letter-spacing: -0.03em; font-size: 0.7em; line-height: 1.04; }

@@ -3,8 +3,9 @@
  *
  * 结构（由 word-swap.js 生成，也可手写）：
  *   <h1 class="ws" aria-label="最终语义">
- *     <span class="ws-line ws-before" aria-hidden="true">
- *       <span class="ws-word" data-side="left" style="--i:0"><span class="ws-mark"></span><span class="ws-text">Designer</span></span> …
+ *     <span class="ws-line ws-before">
+ *       <span class="ws-word" data-side="left" style="--i:0" aria-hidden="true"><span class="ws-mark"></span><span class="ws-text">Designer</span></span> …
+ *       （可选）分行时每行包一层 <span class="ws-row">，行内不折行
  *     </span>
  *     <span class="ws-line ws-after" aria-hidden="true">… <span class="ws-slot"></span> …</span>
  *   </h1>
@@ -27,6 +28,7 @@
   margin: 0;
 }
 .ws-line { grid-area: 1 / 1; align-self: center; }
+.ws-row { display: block; white-space: nowrap; }
 .ws-word { display: inline-block; position: relative; --at: calc(var(--delay) + var(--i) * var(--stagger)); }
 .ws-text { display: inline-block; }
 .ws-mark {

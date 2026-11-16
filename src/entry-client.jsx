@@ -18,6 +18,6 @@ const ready = m ? loadBody(decodeURIComponent(m[1])) : Promise.resolve();
 
 const root = document.getElementById("root");
 ready.then(() => {
-  if (root.hasChildNodes()) hydrateRoot(root, app);
-  else createRoot(root).render(app); // vite dev：没有预渲染内容
+  if (root.firstElementChild) hydrateRoot(root, app);
+  else createRoot(root).render(app); // vite dev：没有预渲染内容（只有 <!--app-html--> 注释节点）
 });

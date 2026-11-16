@@ -1,0 +1,104 @@
+/* 句子里的工具胶囊：字体、字号全部继承所在句子，尺寸都用 em，随标题缩放 */
+.agent-token {
+  --icon: 0.94em;
+  --pad-start: 0.1em;
+  --pad-end: 0.3em;
+  --inset: calc(var(--pad-start) + var(--icon) + 0.12em);
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  padding: 0 var(--pad-end) 0 var(--inset);
+  margin: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: 999px;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+  transition: width 420ms var(--ease-spring);
+}
+/* 胶囊底只画在字身高度上，不拉高行距；斜体衬线的视觉中心比几何中心略低 */
+.agent-token::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-inline: 0;
+  top: 50%;
+  height: 1.02em;
+  translate: 0 -44%;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.06);
+  transition: background-color 150ms ease-out, scale 150ms ease-out;
+}
+.agent-token:hover::before { background: rgba(0, 0, 0, 0.1); }
+.agent-token:active::before { scale: 0.98; }
+.agent-token:focus-visible { outline: none; }
+.agent-token:focus-visible::before { outline: 2px solid var(--ink); outline-offset: 0.06em; }
+
+.agent-token-label { display: inline-block; }
+
+/* 图标是贴在句子里的贴纸：白色模切边 + 一点投影，每个工具歪一个角度 */
+.agent-token-icons {
+  position: absolute;
+  inset-block: 0;
+  left: var(--pad-start);
+  width: var(--icon);
+  pointer-events: none;
+}
+.agent-token-icon {
+  position: absolute;
+  left: 0;
+  top: 54%;
+  width: var(--icon);
+  height: var(--icon);
+  translate: 0 -50%;
+  rotate: var(--tilt);
+  display: grid;
+  place-items: center;
+  filter:
+    drop-shadow(0.025em 0 0 #fff) drop-shadow(-0.025em 0 0 #fff)
+    drop-shadow(0 0.025em 0 #fff) drop-shadow(0 -0.025em 0 #fff)
+    drop-shadow(0 0.02em 0.03em rgba(0, 0, 0, 0.14));
+}
+.agent-token-icon > img,
+.agent-token-icon > .sprite { width: 88%; height: 88%; display: block; }
+.agent-token-icon > .sprite { image-rendering: pixelated; }
+.agent-token-icon.is-in { animation: agent-icon-in 560ms var(--ease-out-expo) both; }
+.agent-token-icon.is-out { animation: agent-icon-out 200ms ease-out forwards; }
+@keyframes agent-icon-in {
+  0%   { opacity: 0; scale: 0.4; rotate: calc(var(--tilt) - 18deg); }
+  60%  { opacity: 1; scale: 1.14; rotate: calc(var(--tilt) + 5deg); }
+  100% { opacity: 1; scale: 1; rotate: var(--tilt); }
+}
+@keyframes agent-icon-out {
+  to { opacity: 0; scale: 0.5; rotate: calc(var(--tilt) + 6deg); }
+}
+
+/* 每个候选词各渲染一份不可见的整颗胶囊，量宽度用 */
+.agent-token-sizers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: max-content;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+.agent-token-sizer {
+  display: block;
+  width: max-content;
+  padding: 0 var(--pad-end) 0 var(--inset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-token { transition: none; }
+  .agent-token-icon.is-in { animation: none; }
+  .agent-token-icon.is-out { display: none; }
+}
