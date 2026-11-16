@@ -35,41 +35,46 @@ export function PixelSprite({ seed, n = 7, colors, className, label }) {
 }
 
 // 与 fx/word-swap.css 对应的结构；用 swapped / out 控制状态
-export function WordSwap({ as: Tag = "h1", before, after, swapped, out = 0, slot, className = "", label, markFill }) {
-  const line = (words, cls) => {
+// 词表记号："/" 换行（每行不折行）；"{slot}" 是图标方块位；其他 "{名字}" 填 slots[名字]，按一个词入场退场。
+// 装饰性的词对读屏隐藏，由标题的 aria-label 朗读；slots 里的控件保持可聚焦、可读。
+export function WordSwap({ as: Tag = "h1", before, after, swapped, out = 0, slot, slots, className = "", label, markFill }) {
+  const line = (words, cls, extra) => {
     let i = 0;
+    const word = (w, k) => {
+      const sep = k ? " " : null;
+      const idx = i++;
+      if (w === "{slot}") return [sep, <span key={k} className="ws-slot" style={{ "--i": idx }} aria-hidden="true">{slot}</span>];
+      const named = /^\{(.+)\}$/.exec(w);
+      // *词* 表示强调：换成标题的衬线斜体
+      const accent = !named && /^\*.+\*$/.test(w);
+      return [
+        sep,
+        <span key={k} className={`ws-word${accent ? " is-accent" : ""}`} data-side={idx % 2 ? "right" : "left"} style={{ "--i": idx }} aria-hidden={named ? undefined : "true"}>
+          <span className="ws-mark" />
+          <span className="ws-text">{named ? slots?.[named[1]] : accent ? w.slice(1, -1) : w}</span>
+        </span>,
+      ];
+    };
+    const rows = [[]];
+    for (const w of words) w === "/" ? rows.push([]) : rows.at(-1).push(w);
     return (
-      <span className={`ws-line ${cls}`} aria-hidden="true">
-        {words.map((w, k) => {
-          const sep = k ? " " : null;
-          if (w === "{slot}") {
-            const idx = i++;
-            return [sep, <span key={k} className="ws-slot" style={{ "--i": idx }}>{slot}</span>];
-          }
-          const idx = i++;
-          // *词* 表示强调：换成标题的衬线斜体
-          const accent = /^\*.+\*$/.test(w);
-          if (accent) w = w.slice(1, -1);
-          return [
-            sep,
-            <span key={k} className={`ws-word${accent ? " is-accent" : ""}`} data-side={idx % 2 ? "right" : "left"} style={{ "--i": idx }}>
-              <span className="ws-mark" />
-              <span className="ws-text">{w}</span>
-            </span>,
-          ];
-        })}
+      <span className={`ws-line ${cls}`} {...extra}>
+        {rows.length === 1
+          ? rows[0].map(word)
+          : rows.map((r, n) => <span key={n} className="ws-row">{r.map(word)}</span>)}
       </span>
     );
   };
-  const words = (after || before).filter((w) => w !== "{slot}").map((w) => w.replace(/^\*(.+)\*$/, "$1"));
+  const words = (after || before).filter((w) => w !== "/" && !/^\{.+\}$/.test(w)).map((w) => w.replace(/^\*(.+)\*$/, "$1"));
   return (
     <Tag
       className={`ws ${swapped ? "is-swapped" : ""} ${className}`}
       aria-label={label || words.join(" ")}
       style={{ "--out": out, ...(markFill ? { "--ws-mark-fill": markFill } : null) }}
     >
-      {line(before, "ws-before")}
-      {after ? line(after, "ws-after") : null}
+      {/* 换句后旧句里的控件不再可点 */}
+      {line(before, "ws-before", after ? { inert: swapped || undefined } : null)}
+      {after ? line(after, "ws-after", { "aria-hidden": "true", inert: !swapped || undefined }) : null}
     </Tag>
   );
 }
