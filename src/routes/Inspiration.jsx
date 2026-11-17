@@ -32,7 +32,7 @@ export function InspirationIndex() {
               <span className="shelf-caption">
                 <span className="shelf-name">{i.name}<span className="insp-aka">{i.aka[0]}</span></span>
                 <span className="shelf-note">{i.summary}</span>
-                <span className="shelf-domain">{i.source.title} · {i.tags.join(" / ")} · {i.date}</span>
+                <span className="shelf-domain">{i.kind} · {i.source.title} · {i.tags.join(" / ")} · {i.date}</span>
               </span>
             </Link>
           </li>
@@ -62,6 +62,17 @@ function LiveFrame({ url, title }) {
   );
 }
 
+// 录屏默认不播；系统没要求减少动效时自动循环播放，要求了就给出控件让人自己点
+function Clip({ src, poster, title }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (window.matchMedia("(prefers-reduced-motion: no-preference)").matches) v.play().catch(() => { v.controls = true; });
+    else v.controls = true;
+  }, []);
+  return <video ref={ref} src={src} poster={poster} muted loop playsInline preload="metadata" width="800" height="500" aria-label={`${title} 录屏`} />;
+}
+
 function External({ item }) {
   const [open, setOpen] = useState(false);
   return (
@@ -70,7 +81,7 @@ function External({ item }) {
       {item.kind ? <span className="chip insp-kind">{item.kind}</span> : null}
       <span className="insp-link-note">{item.note}</span>
       <span className="insp-link-foot">
-        <span className="shelf-domain">{item.domain}</span>
+        <span className="shelf-domain">{item.domain}{item.captured ? ` · ${item.captured} 核实` : ""}{item.archive ? <> · <a className="insp-archive" href={item.archive} target="_blank" rel="noopener">存档</a></> : null}</span>
         {item.embed ? <button type="button" className="insp-peek" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? "收起" : "预览"}</button> : null}
       </span>
       {open ? <LiveFrame url={item.url} title={item.title} /> : null}
@@ -85,9 +96,13 @@ export function InspirationDetail() {
   return (
     <article className="page insp">
       <header className="page-head">
-        <p className="kicker"><Link to="/inspiration/">Inspiration</Link> · {item.date} · {item.tags.join(" / ")}</p>
+        <p className="kicker"><Link to="/inspiration/">Inspiration</Link> · {item.kind} · {item.date} · {item.tags.join(" / ")}</p>
         <h1 className="page-title">{item.name}</h1>
         <div className="chips">{item.aka.map((a) => <span key={a} className="chip">{a}</span>)}</div>
+        <p className="insp-uses">
+          <span>用到</span>
+          {item.uses.map((u) => (u.id ? <Link key={u.id} className="chip chip-ghost" to={`/inspiration/${u.id}/`}>{u.name}</Link> : <span key={u.name} className="chip chip-ghost">{u.name}</span>))}
+        </p>
         <p className="shelf-lead">{item.summary}</p>
       </header>
 
@@ -99,11 +114,12 @@ export function InspirationDetail() {
       ) : (
         <a className="lift insp-hero" href={item.source.url} target="_blank" rel="noopener">
           <span className="lift-card shelf-media insp-media">
-            <img src={item.image} alt={`${item.source.title} 首屏截图`} decoding="async" width="800" height="500" />
+            {item.video ? <Clip src={item.video} poster={item.image} title={item.source.title} /> : <img src={item.image} alt={`${item.source.title} 首屏截图`} decoding="async" width="800" height="500" />}
           </span>
-          <span className="shelf-domain">原始设计 · {item.source.title} · {item.source.domain}</span>
+          <span className="shelf-domain">原始设计 · {item.source.title} · {item.source.domain} · {item.source.captured} 核实</span>
         </a>
       )}
+      {item.source.archive ? <a className="shelf-domain insp-archive" href={item.source.archive} target="_blank" rel="noopener">原始设计的存档</a> : null}
 
       <section className="insp-sec" aria-labelledby="insp-why">
         <h2 className="insp-h" id="insp-why">为什么成立</h2>
@@ -121,6 +137,11 @@ export function InspirationDetail() {
           ))}
         </ol>
         <p className="insp-recipe"><b>最省事的做法</b>{item.recipe}</p>
+      </section>
+
+      <section className="insp-sec" aria-labelledby="insp-avoid">
+        <h2 className="insp-h" id="insp-avoid">不适合</h2>
+        <p className="insp-avoid">{item.avoid}</p>
       </section>
 
       <section className="insp-sec" aria-labelledby="insp-similar">

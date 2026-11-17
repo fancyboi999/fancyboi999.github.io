@@ -3,10 +3,12 @@
     {
       "id": "creation-of-adam",
       "name": "创造亚当之手",
-      "aka": ["Creation of Adam motif", "Visual metaphor", "ASCII / dither art", "Particle assembly"],
+      "kind": "母题",
+      "aka": ["Creation of Adam motif", "Two reaching hands"],
+      "uses": ["Halftone / dithering", "ASCII art", "Particle assembly"],
       "date": "2026-11-13",
       "tags": ["视觉", "动效"],
-      "source": { "title": "小云雀 · 页脚", "url": "https://www.xiaoyunque.com/" },
+      "source": { "title": "小云雀 · 页脚", "url": "https://www.xiaoyunque.com/", "captured": "2026-11-13" },
       "summary": "借米开朗基罗《创造亚当》里两只将触未触的手，用点阵或字符重画，指尖之间的空隙放自己的品牌或产品。",
       "principle": "AI 和创作工具要表达“人和机器一起创造”，这个概念抽象，直接写字没有分量。《创造亚当》的两只手几乎人人认得，而且画的正是“赋予生命的一瞬”，借过来就不用解释。两根指尖之间那道空隙是整幅画的焦点，谁放进空隙，谁就成了那一下“点化”。再用点阵或字符重画，古典名画就带上了“被计算出来”的质感，正好对上 AI 产品。",
       "parts": [
@@ -28,11 +30,12 @@
         }
       ],
       "recipe": "在 21st 的 ASCII 编辑器里套“创造亚当”配方，把原画转成点阵或字符，导出循环视频或组件；指尖空隙里放自己的 logo。要做聚合动画，就从图片采样出点的目标坐标，入场时让点从随机位置移过去。",
+      "avoid": "这个典故已经被很多 AI 产品拿来用（同类设计里就有几家），品牌想讲的不是“人和机器一起创造”时，借它只会显得跟风。点阵和字符画对读屏没有意义，要写清楚 alt；粒子聚合在低端设备上占 CPU 和 GPU，prefers-reduced-motion: reduce 时直接显示聚好的终态。",
       "similar": [
-        { "title": "Nuphos", "url": "https://nuphos.ai/", "embed": true, "kind": "插画", "note": "首屏是插画版双手，前面叠产品界面，图注“FIG. 01 — The creation of a pull request”。" },
-        { "title": "Hoome · ASCII 壁纸", "url": "https://hoome.dev/en/themes/ascii/", "kind": "字符画", "note": "整幅壁画和双手特写做成琥珀色或灰色字符画，当浏览器新标签页背景，有动画版。" },
-        { "title": "Dirga · Creation of Adam GRUB", "url": "https://dirga.dev/projects/creation-of-adam", "embed": true, "kind": "字符画", "note": "用 ASCII 双手做 Linux GRUB 开机画面，MIT 协议。" },
-        { "title": "modern.css · 3D Creation of Adam", "url": "https://modern-css.com/atlas/showcase/creation-of-adam-3d/", "kind": "CSS 3D", "note": "两只手全用 CSS 搭成，可以旋转着看。" }
+        { "title": "Nuphos", "url": "https://nuphos.ai/", "captured": "2026-11-13", "embed": true, "kind": "插画", "note": "首屏是插画版双手，前面叠产品界面，图注“FIG. 01 — The creation of a pull request”。" },
+        { "title": "Hoome · ASCII 壁纸", "url": "https://hoome.dev/en/themes/ascii/", "captured": "2026-11-13", "kind": "字符画", "note": "整幅壁画和双手特写做成琥珀色或灰色字符画，当浏览器新标签页背景，有动画版。" },
+        { "title": "Dirga · Creation of Adam GRUB", "url": "https://dirga.dev/projects/creation-of-adam", "captured": "2026-11-13", "embed": true, "kind": "字符画", "note": "用 ASCII 双手做 Linux GRUB 开机画面，MIT 协议。" },
+        { "title": "modern.css · 3D Creation of Adam", "url": "https://modern-css.com/atlas/showcase/creation-of-adam-3d/", "captured": "2026-11-13", "kind": "CSS 3D", "note": "两只手全用 CSS 搭成，可以旋转着看。" }
       ],
       "kits": [
         { "title": "21st · ASCII 编辑器", "url": "https://21st.dev/community/ascii/editor", "embed": true, "note": "任意图片转成字符、像素或点阵，可调样式，导出动画。" },
@@ -47,10 +50,12 @@
     {
       "id": "interactive-sentence",
       "name": "句子即界面",
-      "aka": ["Sentence as interface", "交互式句子", "Interactive sentence", "Inline hover reveal", "Mad Libs headline"],
+      "kind": "模式",
+      "aka": ["Sentence as interface", "Interactive sentence", "Mad Libs headline", "Inline hover reveal"],
+      "uses": ["Text morph", "Hover card", "Tooltip"],
       "date": "2026-11-12",
       "tags": ["排版", "交互", "动效"],
-      "source": { "title": "Graphical", "url": "https://www.graphicalui.com/", "embed": true },
+      "source": { "title": "Graphical", "url": "https://www.graphicalui.com/", "embed": true, "captured": "2026-11-12" },
       "summary": "一句话里嵌几个可交互的词：换成同类的另一个词，看这句话能套多广；在词旁展开图片或注释，看这个词有多深。",
       "principle": "页面想用一句话把事情说清，可这句话要盖住很多对象，正文里有的词也值得配一张图或一句解释。写成清单，或者链到别的页面，人就离开了这句话。把句子拆成固定的骨架和少数几个词，词就是入口，要补充的内容仍然挂在这句话上。换一个词，同一副骨架套上不同的对象，看的是广度；在词旁边展开图片或注释，看的是深度。",
       "parts": [
@@ -80,18 +85,19 @@
         }
       ],
       "recipe": "换词时，用 Torph 的 <TextMorph> 包住当前词，外面套一个 <button>，点击切到下一个候选；用隐藏的 span 量出每个候选词的宽度，给按钮的 width 加上 transition。想自动轮换，就把点击换成定时器。词旁展开时，用 Radix 或 shadcn 的 Hover Card，或者 Floating UI 的 useHover，处理定位、延时和安全区，展开动画用 GSAP SplitText。Codrops 仓库里的 hoverCards.js（MIT）把“定位和开合”与“每种外观的 open/close”分开，新增一种外观，只写一对返回 tween 的函数。",
+      "avoid": "一句话里的入口超过三四个，句子就读不顺，人会去找按钮而不是读句子。要比较或批量查看的内容放回列表和表格。悬停在触屏上不存在，每个入口都要有点击和键盘聚焦的等价做法；自动轮换的词超过 5 秒要能暂停（WCAG 2.2.2）。",
       "similar": [
-        { "title": "Codrops · 行内悬停揭示", "url": "https://tympanus.net/Demos/InlineHoverReveals/", "kind": "词旁展开", "note": "词旁展开的原例。正文挑几个词做触发词，悬停、Tab 聚焦或触屏轻点时在词旁展开图片或小注，移开收回。同一套骨架十六种外观，有几种用 WebGL。发布帖：https://x.com/codrops/status/2120834583755202808" },
-        { "title": "Los Feliz Engineering", "url": "https://lfe.org/", "embed": true, "kind": "点词展开", "note": "整页是一段话，带图标的词都是按钮，点了展开对应内容。公司已被收购，网站只作存档。" },
-        { "title": "维基百科 · Page Previews", "url": "https://www.mediawiki.org/wiki/Page_Previews", "kind": "悬停摘要", "note": "悬停站内链接时显示摘要和配图，为的是少开一个标签页。" },
-        { "title": "Gwern.net", "url": "https://gwern.net/", "embed": true, "kind": "悬停注释", "note": "链接悬停弹出注释，注释里的链接还能再弹出一层。" },
-        { "title": "Codrops · 图片揭示悬停", "url": "https://tympanus.net/Development/ImageRevealHover/", "kind": "图片揭示", "note": "2018 年的演示，五种图片揭示的悬停效果。" },
-        { "title": "Codrops 自然语言表单", "url": "https://tympanus.net/Tutorials/NaturalLanguageForm/", "kind": "点词填空", "note": "句子本身就是表单：“I feel like eating any food in a standard restaurant…”，里面的选项点开就能换。" },
-        { "title": "Pedro Duarte", "url": "https://ped.ro/", "embed": true, "kind": "关键词胶囊", "note": "自我介绍随滚动一句句亮起，关键词套着胶囊框。只做强调，点了不会变。" },
-        { "title": "Notion", "url": "https://www.notion.com/", "kind": "关键词胶囊", "note": "标题里的 Think 放在彩色小标签里，标签里也藏着一个量宽度用的 span，和 Graphical 同一招。" },
-        { "title": "Hootsuite", "url": "https://www.hootsuite.com/", "kind": "自动轮换", "note": "“Social can be chaotic.”句尾的词轮流换成 complicated、risky、sloppy、noisy。" },
-        { "title": "Gong", "url": "https://www.gong.io/", "kind": "自动轮换", "note": "“Revenue AI built to…”后面轮流换成不同的业务成果。" },
-        { "title": "Profound", "url": "https://www.tryprofound.com/", "kind": "自动轮换", "note": "句尾轮流换成 ChatGPT、Perplexity、Claude、Gemini 等 AI 产品名。" }
+        { "title": "Codrops · 行内悬停揭示", "url": "https://tympanus.net/Demos/InlineHoverReveals/", "captured": "2026-11-12", "kind": "词旁展开", "note": "词旁展开的原例。正文挑几个词做触发词，悬停、Tab 聚焦或触屏轻点时在词旁展开图片或小注，移开收回。同一套骨架十六种外观，有几种用 WebGL。发布帖：https://x.com/codrops/status/2120834583755202808" },
+        { "title": "Los Feliz Engineering", "url": "https://lfe.org/", "captured": "2026-11-12", "embed": true, "kind": "点词展开", "note": "整页是一段话，带图标的词都是按钮，点了展开对应内容。公司已被收购，网站只作存档。" },
+        { "title": "维基百科 · Page Previews", "url": "https://www.mediawiki.org/wiki/Page_Previews", "captured": "2026-11-12", "kind": "悬停摘要", "note": "悬停站内链接时显示摘要和配图，为的是少开一个标签页。" },
+        { "title": "Gwern.net", "url": "https://gwern.net/", "captured": "2026-11-12", "embed": true, "kind": "悬停注释", "note": "链接悬停弹出注释，注释里的链接还能再弹出一层。" },
+        { "title": "Codrops · 图片揭示悬停", "url": "https://tympanus.net/Development/ImageRevealHover/", "captured": "2026-11-12", "kind": "图片揭示", "note": "2018 年的演示，五种图片揭示的悬停效果。" },
+        { "title": "Codrops 自然语言表单", "url": "https://tympanus.net/Tutorials/NaturalLanguageForm/", "captured": "2026-11-12", "kind": "点词填空", "note": "句子本身就是表单：“I feel like eating any food in a standard restaurant…”，里面的选项点开就能换。" },
+        { "title": "Pedro Duarte", "url": "https://ped.ro/", "captured": "2026-11-12", "embed": true, "kind": "关键词胶囊", "note": "自我介绍随滚动一句句亮起，关键词套着胶囊框。只做强调，点了不会变。" },
+        { "title": "Notion", "url": "https://www.notion.com/", "captured": "2026-11-12", "kind": "关键词胶囊", "note": "标题里的 Think 放在彩色小标签里，标签里也藏着一个量宽度用的 span，和 Graphical 同一招。" },
+        { "title": "Hootsuite", "url": "https://www.hootsuite.com/", "captured": "2026-11-12", "kind": "自动轮换", "note": "“Social can be chaotic.”句尾的词轮流换成 complicated、risky、sloppy、noisy。" },
+        { "title": "Gong", "url": "https://www.gong.io/", "captured": "2026-11-12", "kind": "自动轮换", "note": "“Revenue AI built to…”后面轮流换成不同的业务成果。" },
+        { "title": "Profound", "url": "https://www.tryprofound.com/", "captured": "2026-11-12", "kind": "自动轮换", "note": "句尾轮流换成 ChatGPT、Perplexity、Claude、Gemini 等 AI 产品名。" }
       ],
       "kits": [
         { "title": "Torph", "url": "https://torph.lochie.me/", "embed": true, "note": "Graphical 用的就是它。逐字母变形，无依赖，有 React、Vue、Svelte 和原生 JS 版本，MIT 协议。" },

@@ -2,9 +2,9 @@
   "name": "fancyboi999.github.io",
   "version": "1.0.0",
   "scripts": {
-    "content": "node scripts/content.mjs",
-    "dev": "node scripts/content.mjs && vite",
-    "build": "node scripts/content.mjs && vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr && node scripts/prerender.mjs",
+    "content": "node scripts/content.mjs && node scripts/check-inspiration.mjs",
+    "dev": "npm run -s content && vite",
+    "build": "npm run -s content && vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr && node scripts/prerender.mjs",
     "preview": "vite preview --port 4173"
   },
   "type": "module",
