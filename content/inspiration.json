@@ -1,12 +1,72 @@
 {
   "items": [
     {
+      "id": "scrollytelling",
+      "name": "滚动叙事",
+      "kind": "体裁",
+      "aka": ["Scrollytelling", "Scroll-driven storytelling", "Scroll narrative"],
+      "uses": ["Pinned / sticky stage", "Scroll-driven animation", "Scroll-triggered steps", "Smooth scroll"],
+      "date": "2026-11-17",
+      "tags": ["动效", "交互", "排版"],
+      "summary": "把滚动条当成故事的播放头：画面钉在视口里，滚多少，故事就推进多少，往回滚就倒放。",
+      "source": { "title": "Grail", "url": "https://grail-app.com/", "captured": "2026-11-17", "video": true },
+      "principle": "普通网页是一张长纸，滚动只是移动视线，内容的先后由版面决定，读者可以随手跳过。要讲一件有先后、有因果的事，比如产品为什么这样设计、一个数字怎么一步步变大、海有多深，就需要控制“下一眼看到什么”。滚动叙事把滚动距离换算成 0 到 1 的进度，用它驱动钉住的画面：同一个舞台上，镜头、图表或模型随进度变化，文字一段段进出。读者手里仍然是熟悉的滚轮，节奏却由作者编排；进度可逆，往回滚就能重看上一步。",
+      "parts": [
+        {
+          "name": "钉住的舞台",
+          "how": "外层是一段很高的轨道（若干屏高），里面的舞台 position: sticky; top: 0; height: 100vh。轨道滚过的距离就是这一幕的长度，舞台在这段时间里一直留在视口。Grail 每一章都是一个舞台，左上角写 Chapter 01、02、03。"
+        },
+        {
+          "name": "滚动换算成进度",
+          "how": "进度 p = 已滚过的距离 ÷（轨道高 − 视口高），限制在 0 到 1。每一幕再切成小区间，比如 0–0.3 让旧标题离场、0.3–0.6 换机位。原生 CSS 用 animation-timeline: view() 加 animation-range；JS 里把 p 写进 CSS 变量，CSS 和 Canvas 都能读。"
+        },
+        {
+          "name": "擦洗还是触发",
+          "how": "擦洗（scrub）是画面跟着滚轮走，停下就停在半途，往回滚就倒放，适合镜头、3D 和序列帧。触发（trigger）是滚到某一步只按一次播放键，动画按自己的时长播完，适合图表切换和文字进场。The Pudding 这类数据长文多用一步一步的触发，产品页多用擦洗。"
+        },
+        {
+          "name": "文字一步一张卡片",
+          "how": "文字不再是连续的正文，而是一段一张卡片，从舞台上方滚过。每张卡片进入视口中线时，舞台切到对应的状态。Pudding《In pursuit of democracy》里，背景是一整片钉住的时间轴星点，演讲卡片一张张浮过，星点同步高亮。"
+        },
+        {
+          "name": "平滑滚动输入",
+          "how": "鼠标滚轮一格一格地跳，直接驱动镜头会一顿一顿的。Lenis 在原生滚动上加一层插值，让进度带惯性地追上真实滚动位置，GSAP 和 Three.js 都从它取进度。它不接管滚动条，键盘和锚点照常工作。"
+        }
+      ],
+      "recipe": "简单的进场、视差、单个舞台里的缩放，用原生 CSS：轨道设 view-timeline-name，舞台 sticky 并绑 animation-timeline 和 animation-range，零依赖；不支持的浏览器用 @supports 回退成普通滚动。多幕编排、阈值切状态、驱动 Canvas 或 3D 时，用 GSAP ScrollTrigger 的 pin + scrub，外加 Lenis 平滑输入。数据长文用 Scrollama 判断第几步进了视口，再更新图表。本站首页用的是一个几十行的 scroll-stage.js，把进度写进 CSS 变量 --p。",
+      "avoid": "读者要查找、比较、跳着看的页面（文档、后台、电商列表）不用，NN/g 2023 年的测试里，带目标的用户觉得这是浪费时间，常常直接离开。不要劫持滚轮：CRL、Igloo 这类整页高度只有一屏、靠监听滚轮切幕的做法，滚动速度和方向都变了，用户会以为页面坏了，在手机上更难退出。Bostock 的建议是保持滚动快速、可逆，不要把所有东西都 position: fixed，方向键、空格、Page Down 和浏览器后退要照常工作。还要尊重 prefers-reduced-motion：不播擦洗动画，直接显示每一步的终态。文字和画面同时在动时最难读，一次只让一样东西动。",
+      "similar": [
+        { "title": "Apple · AirPods Pro 3", "url": "https://www.apple.com/airpods-pro/", "captured": "2026-11-17", "kind": "产品", "note": "商业产品页的典型：降噪那一屏，流光圆环随滚动擦洗变化，卖点文案一句句进退。" },
+        { "title": "Lenis", "url": "https://lenis.dev/", "captured": "2026-11-17", "kind": "产品", "note": "平滑滚动库的官网，自己就是示范：大字 LENIS 拆散又收回，WebGL 光线随滚动推进，讲完库的特性后接到 Showcase 案例墙。原地址 lenis.darkroom.engineering 现在跳转到这里。" },
+        { "title": "Justin Jefferson", "url": "https://jjettas.com/", "captured": "2026-11-17", "kind": "人物", "note": "球员个人站。“Signature Moments”一幕钉住，滚动推着球卡沿码线刻度 20、30、40、50 横向走过，把职业生涯讲成一次推进。" },
+        { "title": "Obys · Grids S03", "url": "https://grids03.obys.agency/", "captured": "2026-11-17", "kind": "课程", "note": "网格课的课程页。滚动时网格本身变成教具，一屏讲一个概念，10 PX、GUTTER 这些术语跟着示意图出现。无头浏览器会被拦（403），要用真浏览器打开。" },
+        { "title": "The Pudding · In pursuit of democracy", "url": "https://pudding.cool/2025/11/democracy/", "captured": "2026-11-17", "kind": "数据", "note": "数据长文的标准写法：一整片 1880–2020 的时间轴星点钉在背景，国会演讲卡片一张张滚过，星点按年份同步高亮。" },
+        { "title": "Neal.fun · The Deep Sea", "url": "https://neal.fun/deep-sea/", "captured": "2026-11-17", "kind": "尺度", "note": "几乎没有特效，滚动距离直接等于海水深度，底部钉着“168 METERS DEEP”这样的读数，一路经过各深度的生物和人类潜水纪录。无头浏览器会被拦（403）。" },
+        { "title": "CRL · Creative Reference Library", "url": "https://crl-2026.webflow.io/", "captured": "2026-11-17", "kind": "品牌", "note": "巨大的字形随滚轮放大、切换，整页高度只有一屏，是劫持滚轮的做法，可以对照“不适合”里的代价看。" },
+        { "title": "Igloo Inc.", "url": "https://www.igloo.inc/", "captured": "2026-11-17", "kind": "品牌", "note": "全屏 WebGL，滚轮切换冰块和 3D 标志的机位，同样是劫持滚轮，页面本身不滚动。" }
+      ],
+      "kits": [
+        { "title": "MDN · CSS scroll-driven animations", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations", "note": "原生机制的文档：scroll()、view()、animation-timeline、animation-range，以及不支持时用 @supports 回退。" },
+        { "title": "Scroll-driven Animations 示例站", "url": "https://scroll-driven-animations.style/", "note": "Chrome 团队 Bramus 维护的纯 CSS 示例和调试工具，每个效果都能看源码。" },
+        { "title": "GSAP · ScrollTrigger", "url": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/", "note": "多幕编排的主力：pin 钉住舞台，scrub 让时间轴跟着滚动走，snap 吸附到每一步。" },
+        { "title": "Lenis", "url": "https://github.com/darkroomengineering/lenis", "note": "平滑滚动输入层，MIT 协议，可以和 GSAP、Three.js 连在一起。" },
+        { "title": "Scrollama", "url": "https://github.com/russellsamora/scrollama", "note": "数据新闻常用的步进库，用 IntersectionObserver 判断第几步进了视口，只管触发，不管动画。" },
+        { "title": "Motion · Scroll animations", "url": "https://motion.dev/docs/react-scroll-animations", "note": "React 里用 useScroll + useTransform，能交给浏览器原生 ScrollTimeline 时会自动交出去。" },
+        { "title": "Mike Bostock · How To Scroll", "url": "https://bost.ocks.org/mike/scroll/", "note": "2014 年 D3 作者写的滚动叙事原则：滚动要快、可逆，不要把所有东西都固定住，不要破坏键盘和后退。" },
+        { "title": "Jim Vallandingham · So You Want to Build A Scroller", "url": "https://vallandingham.me/scroller.html", "note": "“左边文字一步步滚、右边图表钉住”这一范式的经典教程，带完整代码。" },
+        { "title": "NN/g · Scrolljacking 101", "url": "https://www.nngroup.com/articles/scrolljacking-101/", "note": "2023 年的可用性测试：劫持滚动让人迷失、失去控制，文字加上变速滚动问题最严重。" }
+      ],
+      "search": ["scrollytelling", "scroll driven animation", "gsap scrolltrigger pin scrub", "sticky scroll storytelling", "scroll narrative website", "apple product page scroll animation", "css animation-timeline view()"]
+    },
+    {
       "id": "creation-of-adam",
       "name": "创造亚当之手",
-      "aka": ["Creation of Adam motif", "Visual metaphor", "ASCII / dither art", "Particle assembly"],
+      "kind": "母题",
+      "aka": ["Creation of Adam motif", "Two reaching hands"],
+      "uses": ["Halftone / dithering", "ASCII art", "Particle assembly"],
       "date": "2026-11-13",
       "tags": ["视觉", "动效"],
-      "source": { "title": "小云雀 · 页脚", "url": "https://www.xiaoyunque.com/" },
+      "source": { "title": "小云雀 · 页脚", "url": "https://www.xiaoyunque.com/", "captured": "2026-11-13" },
       "summary": "借米开朗基罗《创造亚当》里两只将触未触的手，用点阵或字符重画，指尖之间的空隙放自己的品牌或产品。",
       "principle": "AI 和创作工具要表达“人和机器一起创造”，这个概念抽象，直接写字没有分量。《创造亚当》的两只手几乎人人认得，而且画的正是“赋予生命的一瞬”，借过来就不用解释。两根指尖之间那道空隙是整幅画的焦点，谁放进空隙，谁就成了那一下“点化”。再用点阵或字符重画，古典名画就带上了“被计算出来”的质感，正好对上 AI 产品。",
       "parts": [
@@ -28,11 +88,12 @@
         }
       ],
       "recipe": "在 21st 的 ASCII 编辑器里套“创造亚当”配方，把原画转成点阵或字符，导出循环视频或组件；指尖空隙里放自己的 logo。要做聚合动画，就从图片采样出点的目标坐标，入场时让点从随机位置移过去。",
+      "avoid": "这个典故已经被很多 AI 产品拿来用（同类设计里就有几家），品牌想讲的不是“人和机器一起创造”时，借它只会显得跟风。点阵和字符画对读屏没有意义，要写清楚 alt；粒子聚合在低端设备上占 CPU 和 GPU，prefers-reduced-motion: reduce 时直接显示聚好的终态。",
       "similar": [
-        { "title": "Nuphos", "url": "https://nuphos.ai/", "embed": true, "kind": "插画", "note": "首屏是插画版双手，前面叠产品界面，图注“FIG. 01 — The creation of a pull request”。" },
-        { "title": "Hoome · ASCII 壁纸", "url": "https://hoome.dev/en/themes/ascii/", "kind": "字符画", "note": "整幅壁画和双手特写做成琥珀色或灰色字符画，当浏览器新标签页背景，有动画版。" },
-        { "title": "Dirga · Creation of Adam GRUB", "url": "https://dirga.dev/projects/creation-of-adam", "embed": true, "kind": "字符画", "note": "用 ASCII 双手做 Linux GRUB 开机画面，MIT 协议。" },
-        { "title": "modern.css · 3D Creation of Adam", "url": "https://modern-css.com/atlas/showcase/creation-of-adam-3d/", "kind": "CSS 3D", "note": "两只手全用 CSS 搭成，可以旋转着看。" }
+        { "title": "Nuphos", "url": "https://nuphos.ai/", "captured": "2026-11-13", "embed": true, "kind": "插画", "note": "首屏是插画版双手，前面叠产品界面，图注“FIG. 01 — The creation of a pull request”。" },
+        { "title": "Hoome · ASCII 壁纸", "url": "https://hoome.dev/en/themes/ascii/", "captured": "2026-11-13", "kind": "字符画", "note": "整幅壁画和双手特写做成琥珀色或灰色字符画，当浏览器新标签页背景，有动画版。" },
+        { "title": "Dirga · Creation of Adam GRUB", "url": "https://dirga.dev/projects/creation-of-adam", "captured": "2026-11-13", "embed": true, "kind": "字符画", "note": "用 ASCII 双手做 Linux GRUB 开机画面，MIT 协议。" },
+        { "title": "modern.css · 3D Creation of Adam", "url": "https://modern-css.com/atlas/showcase/creation-of-adam-3d/", "captured": "2026-11-13", "kind": "CSS 3D", "note": "两只手全用 CSS 搭成，可以旋转着看。" }
       ],
       "kits": [
         { "title": "21st · ASCII 编辑器", "url": "https://21st.dev/community/ascii/editor", "embed": true, "note": "任意图片转成字符、像素或点阵，可调样式，导出动画。" },
@@ -47,10 +108,12 @@
     {
       "id": "interactive-sentence",
       "name": "句子即界面",
-      "aka": ["Sentence as interface", "交互式句子", "Interactive sentence", "Inline hover reveal", "Mad Libs headline"],
+      "kind": "模式",
+      "aka": ["Sentence as interface", "Interactive sentence", "Mad Libs headline", "Inline hover reveal"],
+      "uses": ["Text morph", "Hover card", "Tooltip"],
       "date": "2026-11-12",
       "tags": ["排版", "交互", "动效"],
-      "source": { "title": "Graphical", "url": "https://www.graphicalui.com/", "embed": true },
+      "source": { "title": "Graphical", "url": "https://www.graphicalui.com/", "embed": true, "captured": "2026-11-12" },
       "summary": "一句话里嵌几个可交互的词：换成同类的另一个词，看这句话能套多广；在词旁展开图片或注释，看这个词有多深。",
       "principle": "页面想用一句话把事情说清，可这句话要盖住很多对象，正文里有的词也值得配一张图或一句解释。写成清单，或者链到别的页面，人就离开了这句话。把句子拆成固定的骨架和少数几个词，词就是入口，要补充的内容仍然挂在这句话上。换一个词，同一副骨架套上不同的对象，看的是广度；在词旁边展开图片或注释，看的是深度。",
       "parts": [
@@ -80,18 +143,19 @@
         }
       ],
       "recipe": "换词时，用 Torph 的 <TextMorph> 包住当前词，外面套一个 <button>，点击切到下一个候选；用隐藏的 span 量出每个候选词的宽度，给按钮的 width 加上 transition。想自动轮换，就把点击换成定时器。词旁展开时，用 Radix 或 shadcn 的 Hover Card，或者 Floating UI 的 useHover，处理定位、延时和安全区，展开动画用 GSAP SplitText。Codrops 仓库里的 hoverCards.js（MIT）把“定位和开合”与“每种外观的 open/close”分开，新增一种外观，只写一对返回 tween 的函数。",
+      "avoid": "一句话里的入口超过三四个，句子就读不顺，人会去找按钮而不是读句子。要比较或批量查看的内容放回列表和表格。悬停在触屏上不存在，每个入口都要有点击和键盘聚焦的等价做法；自动轮换的词超过 5 秒要能暂停（WCAG 2.2.2）。",
       "similar": [
-        { "title": "Codrops · 行内悬停揭示", "url": "https://tympanus.net/Demos/InlineHoverReveals/", "kind": "词旁展开", "note": "词旁展开的原例。正文挑几个词做触发词，悬停、Tab 聚焦或触屏轻点时在词旁展开图片或小注，移开收回。同一套骨架十六种外观，有几种用 WebGL。发布帖：https://x.com/codrops/status/2120834583755202808" },
-        { "title": "Los Feliz Engineering", "url": "https://lfe.org/", "embed": true, "kind": "点词展开", "note": "整页是一段话，带图标的词都是按钮，点了展开对应内容。公司已被收购，网站只作存档。" },
-        { "title": "维基百科 · Page Previews", "url": "https://www.mediawiki.org/wiki/Page_Previews", "kind": "悬停摘要", "note": "悬停站内链接时显示摘要和配图，为的是少开一个标签页。" },
-        { "title": "Gwern.net", "url": "https://gwern.net/", "embed": true, "kind": "悬停注释", "note": "链接悬停弹出注释，注释里的链接还能再弹出一层。" },
-        { "title": "Codrops · 图片揭示悬停", "url": "https://tympanus.net/Development/ImageRevealHover/", "kind": "图片揭示", "note": "2018 年的演示，五种图片揭示的悬停效果。" },
-        { "title": "Codrops 自然语言表单", "url": "https://tympanus.net/Tutorials/NaturalLanguageForm/", "kind": "点词填空", "note": "句子本身就是表单：“I feel like eating any food in a standard restaurant…”，里面的选项点开就能换。" },
-        { "title": "Pedro Duarte", "url": "https://ped.ro/", "embed": true, "kind": "关键词胶囊", "note": "自我介绍随滚动一句句亮起，关键词套着胶囊框。只做强调，点了不会变。" },
-        { "title": "Notion", "url": "https://www.notion.com/", "kind": "关键词胶囊", "note": "标题里的 Think 放在彩色小标签里，标签里也藏着一个量宽度用的 span，和 Graphical 同一招。" },
-        { "title": "Hootsuite", "url": "https://www.hootsuite.com/", "kind": "自动轮换", "note": "“Social can be chaotic.”句尾的词轮流换成 complicated、risky、sloppy、noisy。" },
-        { "title": "Gong", "url": "https://www.gong.io/", "kind": "自动轮换", "note": "“Revenue AI built to…”后面轮流换成不同的业务成果。" },
-        { "title": "Profound", "url": "https://www.tryprofound.com/", "kind": "自动轮换", "note": "句尾轮流换成 ChatGPT、Perplexity、Claude、Gemini 等 AI 产品名。" }
+        { "title": "Codrops · 行内悬停揭示", "url": "https://tympanus.net/Demos/InlineHoverReveals/", "captured": "2026-11-12", "kind": "词旁展开", "note": "词旁展开的原例。正文挑几个词做触发词，悬停、Tab 聚焦或触屏轻点时在词旁展开图片或小注，移开收回。同一套骨架十六种外观，有几种用 WebGL。发布帖：https://x.com/codrops/status/2120834583755202808" },
+        { "title": "Los Feliz Engineering", "url": "https://lfe.org/", "captured": "2026-11-12", "embed": true, "kind": "点词展开", "note": "整页是一段话，带图标的词都是按钮，点了展开对应内容。公司已被收购，网站只作存档。" },
+        { "title": "维基百科 · Page Previews", "url": "https://www.mediawiki.org/wiki/Page_Previews", "captured": "2026-11-12", "kind": "悬停摘要", "note": "悬停站内链接时显示摘要和配图，为的是少开一个标签页。" },
+        { "title": "Gwern.net", "url": "https://gwern.net/", "captured": "2026-11-12", "embed": true, "kind": "悬停注释", "note": "链接悬停弹出注释，注释里的链接还能再弹出一层。" },
+        { "title": "Codrops · 图片揭示悬停", "url": "https://tympanus.net/Development/ImageRevealHover/", "captured": "2026-11-12", "kind": "图片揭示", "note": "2018 年的演示，五种图片揭示的悬停效果。" },
+        { "title": "Codrops 自然语言表单", "url": "https://tympanus.net/Tutorials/NaturalLanguageForm/", "captured": "2026-11-12", "kind": "点词填空", "note": "句子本身就是表单：“I feel like eating any food in a standard restaurant…”，里面的选项点开就能换。" },
+        { "title": "Pedro Duarte", "url": "https://ped.ro/", "captured": "2026-11-12", "embed": true, "kind": "关键词胶囊", "note": "自我介绍随滚动一句句亮起，关键词套着胶囊框。只做强调，点了不会变。" },
+        { "title": "Notion", "url": "https://www.notion.com/", "captured": "2026-11-12", "kind": "关键词胶囊", "note": "标题里的 Think 放在彩色小标签里，标签里也藏着一个量宽度用的 span，和 Graphical 同一招。" },
+        { "title": "Hootsuite", "url": "https://www.hootsuite.com/", "captured": "2026-11-12", "kind": "自动轮换", "note": "“Social can be chaotic.”句尾的词轮流换成 complicated、risky、sloppy、noisy。" },
+        { "title": "Gong", "url": "https://www.gong.io/", "captured": "2026-11-12", "kind": "自动轮换", "note": "“Revenue AI built to…”后面轮流换成不同的业务成果。" },
+        { "title": "Profound", "url": "https://www.tryprofound.com/", "captured": "2026-11-12", "kind": "自动轮换", "note": "句尾轮流换成 ChatGPT、Perplexity、Claude、Gemini 等 AI 产品名。" }
       ],
       "kits": [
         { "title": "Torph", "url": "https://torph.lochie.me/", "embed": true, "note": "Graphical 用的就是它。逐字母变形，无依赖，有 React、Vue、Svelte 和原生 JS 版本，MIT 协议。" },
